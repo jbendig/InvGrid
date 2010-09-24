@@ -1,0 +1,24 @@
+InvGrid 0.1
+
+InvGrid is a simple inventory editor for Minecraft. It is designed to be cross platform compatible, unlike some other editors that require mono on Linux and OS X. Only Alpha based maps are currently supported.
+
+Dependencies
+>= Qt 4.6
+>= boost 1.44
+>= zlib 1.2.3
+
+Build instructions
+ccmake .
+cmake .
+make
+
+OS X users can run build_bundle.sh to generate a bundle and dmg.
+
+Usage instructions
+Start InvGrid, go to File->Open, and select the level.dat for the world you would like to edit. OS X users can find the world save files in the /Users/<username>/Library/Application Support/minecraft/saves/ directory.
+
+Next, select a row in the table on the left to begin editing. If an item doesn't exist in that slot, click "New Item" to create one. Adjust the selected item's type, count, and damage on the right. Changes are automatically reflected in the left table.
+
+Finally, when you're done editing, go to File->Save and save over the level.dat you originally opened.
+
+Happy mining! :)
