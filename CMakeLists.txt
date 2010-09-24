@@ -1,0 +1,27 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
+
+PROJECT(InvGrid)
+
+FIND_PACKAGE(Qt4 REQUIRED)
+INCLUDE(${QT_USE_FILE})
+
+SET(TEST_CXX_SRCS
+	main.cpp
+	FileUtil.cpp
+	NBTTag.cpp
+	Types.cpp
+	Item.cpp
+	MainWindow.cpp
+	EditWidget.cpp
+)
+
+SET(TEST_MOC_SRCS
+	MainWindow.h
+	EditWidget.h
+)
+
+QT4_WRAP_CPP(TEST_CXX_SRCS ${TEST_MOC_SRCS})
+
+ADD_EXECUTABLE(InvGrid ${TEST_CXX_SRCS})
+TARGET_LINK_LIBRARIES(InvGrid ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(InvGrid z)
