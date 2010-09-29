@@ -21,7 +21,7 @@ EditWidget::EditWidget()
 	//typeEdit = new QLineEdit();
 	damageLabel = new QLabel("Damage");
 	damageSpinBox = new QSpinBox();
-	damageSpinBox->setRange(0,SHRT_MAX);
+	damageSpinBox->setRange(SHRT_MIN,SHRT_MAX);
 	countLabel = new QLabel("Count");
 	countSpinBox = new QSpinBox();
 	countSpinBox->setRange(1,255);

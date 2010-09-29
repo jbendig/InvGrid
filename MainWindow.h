@@ -21,7 +21,13 @@ class MainWindow : public QMainWindow
 		void UpdateItem();
 	private slots:
 		void Open();
+		void OpenWorld1();
+		void OpenWorld2();
+		void OpenWorld3();
+		void OpenWorld4();
+		void OpenWorld5();
 		void Save();
+		void SaveAs();
 		void SelectedItem(const QItemSelection& selected,const QItemSelection& deselected);
 	private:
 		//Widgets
@@ -30,14 +36,16 @@ class MainWindow : public QMainWindow
 		EditWidget* editWidget;
 		
 		//Data
+		QString openFileName;
 		NBT::Tag rootTag;
 		ItemMap itemMap;
 		QStandardItemModel model;
 
 		MainWindow(const MainWindow&); //No definition.
 		MainWindow& operator=(const MainWindow&); //No definition.
-		void Load(const char* filePath);
-		void Save(const char* filePath);
+		void LoadWorld(const char* worldName);
+		bool Load(const char* filePath);
+		bool Save(const char* filePath);
 		void SelectItem(const unsigned int* slot);
 		NBT::Tag* GetInventoryTag();
 		static Item TagToItem(NBT::Tag& tag);

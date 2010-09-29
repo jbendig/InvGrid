@@ -4,6 +4,7 @@
 #include <boost/foreach.hpp>
 #include "EditWidget.h"
 #include "FileUtil.h"
+#include "FilePath.h"
 
 MainWindow::MainWindow()
 : QMainWindow()
@@ -13,13 +14,38 @@ MainWindow::MainWindow()
 	openAction->setShortcuts(QKeySequence::Open);
 	connect(openAction,SIGNAL(triggered()),this,SLOT(Open()));
 
+	QAction* openWorld1Action = new QAction("Open World 1",NULL);
+	connect(openWorld1Action,SIGNAL(triggered()),this,SLOT(OpenWorld1()));
+
+	QAction* openWorld2Action = new QAction("Open World 2",NULL);
+	connect(openWorld2Action,SIGNAL(triggered()),this,SLOT(OpenWorld2()));
+
+	QAction* openWorld3Action = new QAction("Open World 3",NULL);
+	connect(openWorld3Action,SIGNAL(triggered()),this,SLOT(OpenWorld3()));
+
+	QAction* openWorld4Action = new QAction("Open World 4",NULL);
+	connect(openWorld4Action,SIGNAL(triggered()),this,SLOT(OpenWorld4()));
+
+	QAction* openWorld5Action = new QAction("Open World 5",NULL);
+	connect(openWorld5Action,SIGNAL(triggered()),this,SLOT(OpenWorld5()));
+
 	QAction* saveAction = new QAction(tr("&Save"),NULL);
 	saveAction->setShortcuts(QKeySequence::Save);
 	connect(saveAction,SIGNAL(triggered()),this,SLOT(Save()));
 
+	QAction* saveAsAction = new QAction(tr("Save As"),NULL);
+	saveAsAction->setShortcuts(QKeySequence::SaveAs);
+	connect(saveAsAction,SIGNAL(triggered()),this,SLOT(SaveAs()));
+
 	fileMenu = menuBar()->addMenu(tr("&File"));
 	fileMenu->addAction(openAction);
+	fileMenu->addAction(openWorld1Action);
+	fileMenu->addAction(openWorld2Action);
+	fileMenu->addAction(openWorld3Action);
+	fileMenu->addAction(openWorld4Action);
+	fileMenu->addAction(openWorld5Action);
 	fileMenu->addAction(saveAction);
+	fileMenu->addAction(saveAsAction);
 
 	//Setup widgets.
 	inventoryTableView = new QTableView();
@@ -43,7 +69,7 @@ MainWindow::MainWindow()
 
 	setCentralWidget(centralWidget);
 	resize(740,500);
-	setWindowTitle("InvGrid 0.1 | Simple Minecraft Inventory Editor");
+	setWindowTitle("InvGrid 0.2 | Simple Minecraft Inventory Editor");
 
 	//Setup events.
 	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
@@ -152,13 +178,47 @@ void MainWindow::Open()
 	Load(fileName.toAscii().data());
 }
 
+void MainWindow::OpenWorld1()
+{
+	LoadWorld("World1");
+}
+
+void MainWindow::OpenWorld2()
+{
+	LoadWorld("World2");
+}
+
+void MainWindow::OpenWorld3()
+{
+	LoadWorld("World3");
+}
+
+void MainWindow::OpenWorld4()
+{
+	LoadWorld("World4");
+}
+
+void MainWindow::OpenWorld5()
+{
+	LoadWorld("World5");
+}
+
 void MainWindow::Save()
+{
+	if(openFileName.isEmpty())
+		QMessageBox::critical(NULL,"Unable to save file","You must open a file first.");
+
+	Save(openFileName.toAscii().data());
+}
+
+void MainWindow::SaveAs()
 {
 	QString fileName = QFileDialog::getSaveFileName(this,tr("Save NBT"),"",tr("Dat files (*.dat)"));
 	if(fileName.isNull())
 		return;
 
-	Save(fileName.toAscii().data());
+	if(Save(fileName.toAscii().data()))
+		openFileName = fileName;
 }
 
 void MainWindow::SelectedItem(const QItemSelection& selected,const QItemSelection&)
@@ -180,7 +240,13 @@ void MainWindow::SelectedItem(const QItemSelection& selected,const QItemSelectio
 	}
 }
 
-void MainWindow::Load(const char* filePath)
+void MainWindow::LoadWorld(const char* worldName)
+{
+	const string worldFilePath = FilePath::GetMinecraftSavesDirectory() + worldName + "/level.dat";
+	Load(worldFilePath.c_str());
+}
+
+bool MainWindow::Load(const char* filePath)
 {
 	const QString failToLoadTitle = "Unable to load file";
 
@@ -188,13 +254,14 @@ void MainWindow::Load(const char* filePath)
 	itemMap.clear();
 	model.removeRows(0,model.rowCount());
 	rootTag = NBT::Tag();
+	openFileName = QString();
 
 	//Read file.
 	vector<unsigned char> compressedBuffer;
 	if(!ReadFile(filePath,compressedBuffer))
 	{
-		QMessageBox::critical(NULL,failToLoadTitle,"Unable to open file. Do you have proper permissions?");
-		return;
+		QMessageBox::critical(NULL,failToLoadTitle,"Unable to open file. Does file exist and do you have permission to access it?");
+		return false;
 	}
 	std::cout << "Read " << compressedBuffer.size() << " bytes from file.\n";
 
@@ -204,21 +271,21 @@ void MainWindow::Load(const char* filePath)
 	{
 		QMessageBox::critical(NULL,failToLoadTitle,"Unable to decompress file. Unsupported file type.");
 		std::cerr << "Unable to uncompress file.\n";
-		return;
+		return false;
 	}
 
 	//Deserialize.
 	if(!NBT::DeserializeTag(buffer,rootTag))
 	{
 		QMessageBox::critical(NULL,failToLoadTitle,"Unable to parse file. Unsupported file type.");
-		return;
+		return false;
 	}
 
 	NBT::Tag* inventoryTag = GetInventoryTag();
 	if(inventoryTag == NULL)
 	{
 		QMessageBox::critical(NULL,failToLoadTitle,"Unable to use file. Not a level.dat or version is unsupported.");
-		return;
+		return false;
 	}
 	for(unsigned int x = 0;x < inventoryTag->childTags.size();++x)
 	{
@@ -250,9 +317,12 @@ void MainWindow::Load(const char* filePath)
 		}
 		model.appendRow(rowItems);
 	}
+
+	openFileName = filePath;
+	return true;
 }
 
-void MainWindow::Save(const char* filePath)
+bool MainWindow::Save(const char* filePath)
 {
 	const QString failToSaveTitle = "Unable to save file";
 
@@ -260,7 +330,7 @@ void MainWindow::Save(const char* filePath)
 	if(inventoryTag == NULL)
 	{
 		QMessageBox::critical(NULL,failToSaveTitle,"You must open a file first.");
-		return;
+		return false;
 	}
 
 	inventoryTag->childTags.clear();
@@ -274,7 +344,7 @@ void MainWindow::Save(const char* filePath)
 	if(!NBT::SerializeTag(buffer,rootTag))
 	{
 		QMessageBox::critical(NULL,failToSaveTitle,"Internal data error.");
-		return;
+		return false;
 	}
 
 	//Compress.
@@ -282,15 +352,17 @@ void MainWindow::Save(const char* filePath)
 	if(!CompressBuffer(buffer,compressedBuffer))
 	{
 		QMessageBox::critical(NULL,failToSaveTitle,"Internal data error. Unable to compress.");
-		return;
+		return false;
 	}
 
 	//Save.
 	if(!WriteFile(filePath,compressedBuffer))
 	{
 		QMessageBox::critical(NULL,failToSaveTitle,"Unable to write file. Do you have proper permissions?");
-		return;
+		return false;
 	}
+
+	return true;
 }
 
 void MainWindow::SelectItem(const unsigned int* slot)
