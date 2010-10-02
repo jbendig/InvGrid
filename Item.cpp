@@ -93,6 +93,7 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(18,"Leaves");
 	ADD_ITEM_TYPE(19,"Sponge");
 	ADD_ITEM_TYPE(20,"Glass");
+	ADD_ITEM_TYPE(35,"White Cloth");
 	ADD_ITEM_TYPE(37,"Yellow Flower");
 	ADD_ITEM_TYPE(38,"Red Rose");
 	ADD_ITEM_TYPE(39,"Brown Mushroom");
