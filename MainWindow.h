@@ -32,6 +32,7 @@ class MainWindow : public QMainWindow
 	private:
 		//Widgets
 		QMenu* fileMenu;
+		QMenu* inventoryMenu;
 		QTableView* inventoryTableView;
 		EditWidget* editWidget;
 		

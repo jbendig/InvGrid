@@ -15,18 +15,23 @@ MainWindow::MainWindow()
 	connect(openAction,SIGNAL(triggered()),this,SLOT(Open()));
 
 	QAction* openWorld1Action = new QAction("Open World 1",NULL);
+	openWorld1Action->setShortcut(QString("Ctrl+1"));
 	connect(openWorld1Action,SIGNAL(triggered()),this,SLOT(OpenWorld1()));
 
 	QAction* openWorld2Action = new QAction("Open World 2",NULL);
+	openWorld2Action->setShortcut(QString("Ctrl+2"));
 	connect(openWorld2Action,SIGNAL(triggered()),this,SLOT(OpenWorld2()));
 
 	QAction* openWorld3Action = new QAction("Open World 3",NULL);
+	openWorld3Action->setShortcut(QString("Ctrl+3"));
 	connect(openWorld3Action,SIGNAL(triggered()),this,SLOT(OpenWorld3()));
 
 	QAction* openWorld4Action = new QAction("Open World 4",NULL);
+	openWorld4Action->setShortcut(QString("Ctrl+4"));
 	connect(openWorld4Action,SIGNAL(triggered()),this,SLOT(OpenWorld4()));
 
 	QAction* openWorld5Action = new QAction("Open World 5",NULL);
+	openWorld5Action->setShortcut(QString("Ctrl+5"));
 	connect(openWorld5Action,SIGNAL(triggered()),this,SLOT(OpenWorld5()));
 
 	QAction* saveAction = new QAction(tr("&Save"),NULL);
@@ -46,6 +51,13 @@ MainWindow::MainWindow()
 	fileMenu->addAction(openWorld5Action);
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
+
+	QAction* newItemAction = new QAction("&New Item",NULL);
+	newItemAction->setShortcut(QString("Ctrl+N"));
+	connect(newItemAction,SIGNAL(triggered()),this,SLOT(NewItem()));
+
+	inventoryMenu = menuBar()->addMenu(tr("&Inventory"));
+	inventoryMenu->addAction(newItemAction);
 
 	//Setup widgets.
 	inventoryTableView = new QTableView();

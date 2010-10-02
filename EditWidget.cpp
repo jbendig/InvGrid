@@ -74,6 +74,7 @@ void EditWidget::SetItem(const Item* item)
 	}
 	else
 	{
+		const bool editIsHidden = editWidget->isHidden();
 		editWidget->show();
 		newWidget->hide();
 
@@ -86,6 +87,10 @@ void EditWidget::SetItem(const Item* item)
 			typeCombo->setCurrentIndex(typeIndex);
 		damageSpinBox->setValue(item->damage);
 		countSpinBox->setValue(item->count);
+
+		//When an item is newly created, automatically focus the type combobox.
+		if(editIsHidden)
+			typeCombo->setFocus();
 		blockSignals(false);
 	}
 }
