@@ -12,6 +12,8 @@
 	<string>APPL</string>
 	<key>CFBundleExecutable</key>
 	<string>InvGrid</string>
+	<key>CFBundleIconFile</key>
+	<string>invgrid.icns</string>
 	<key>NSMainNibFile</key>
 	<string>application</string>
 	<key>NSPrincipalClass</key>
