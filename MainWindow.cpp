@@ -81,7 +81,7 @@ MainWindow::MainWindow()
 
 	setCentralWidget(centralWidget);
 	resize(740,500);
-	setWindowTitle("InvGrid 0.2 | Simple Minecraft Inventory Editor");
+	setWindowTitle("InvGrid 0.3-rc3 | Simple Minecraft Inventory Editor");
 
 	//Setup events.
 	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
@@ -337,6 +337,7 @@ bool MainWindow::Load(const char* filePath)
 bool MainWindow::Save(const char* filePath)
 {
 	const QString failToSaveTitle = "Unable to save file";
+	const QString backupSuffix = ".invgridbackup";
 
 	NBT::Tag* inventoryTag = GetInventoryTag();
 	if(inventoryTag == NULL)
@@ -366,6 +367,11 @@ bool MainWindow::Save(const char* filePath)
 		QMessageBox::critical(NULL,failToSaveTitle,"Internal data error. Unable to compress.");
 		return false;
 	}
+
+	//Backup original.
+	const QString backupFile = filePath + backupSuffix;
+	QFile::remove(backupFile);
+	QFile::rename(filePath,backupFile);
 
 	//Save.
 	if(!WriteFile(filePath,compressedBuffer))
@@ -402,6 +408,14 @@ NBT::Tag* MainWindow::GetInventoryTag()
 	if(playerTag == NULL)
 		return NULL;
 	Tag* inventoryTag = GetChildNamedTag(playerTag,"Inventory");
+
+	//Hack work around for an issue where empty inventories have the wrong list type.
+	if(inventoryTag->listType != NBT::TAG_COMPOUND)
+	{
+		inventoryTag->listType = NBT::TAG_COMPOUND;
+		inventoryTag->childTags.clear();
+	}
+
 	return inventoryTag;
 }
 
@@ -419,10 +433,34 @@ Item MainWindow::TagToItem(NBT::Tag& tag)
 	assert(slotTag != NULL);
 
 	Item item;
-	item.id = idTag->shortValue;
-	item.damage = damageTag->shortValue;
-	item.count = countTag->byteValue;
-	item.slot = slotTag->byteValue;
+	if(idTag != NULL)
+		item.id = idTag->shortValue;
+	else
+	{
+		std::cerr << "Warning: Item found without item tag.\n";
+		PrintTag(tag);
+	}
+	if(damageTag != NULL)
+		item.damage = damageTag->shortValue;
+	else
+	{
+		std::cerr << "Warning: Item found without damage tag.\n";
+		PrintTag(tag);
+	}
+	if(countTag != NULL)
+		item.count = countTag->byteValue;
+	else
+	{
+		std::cerr << "Warning: Item found without count tag.\n";
+		PrintTag(tag);
+	}
+	if(slotTag != NULL)
+		item.slot = slotTag->byteValue;
+	else
+	{
+		std::cerr << "Warning: Item found without slot tag.\n";
+		PrintTag(tag);
+	}
 	return item;
 }
 
