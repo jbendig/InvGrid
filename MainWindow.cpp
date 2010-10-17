@@ -89,7 +89,7 @@ MainWindow::MainWindow()
 	centralWidget->setLayout(topLayout);
 
 	setCentralWidget(centralWidget);
-	resize(740,500);
+	resize(780,500);
 	setWindowTitle("InvGrid 0.3 | Simple Minecraft Inventory Editor");
 
 	//Setup events.

@@ -16,22 +16,22 @@ class EditWidget : public QWidget
 		void NewItem();
 		void DeleteItem();
 		void UpdateItem();
+	private slots:
+		void FilterTypeList(const QString& filterText);
 	private:
 		QWidget* newWidget;
 		QPushButton* newButton;
 
 		QWidget* editWidget;
 		QLabel* slotLabel;
-		QLabel* typeLabel;
-		QComboBox* typeCombo;
-		//QLineEdit* typeEdit;
-		QLabel* damageLabel;
+		QLineEdit* typeSearchEdit;
+		QListWidget* typeListWidget;
 		QSpinBox* damageSpinBox;
-		QLabel* countLabel;
 		QSpinBox* countSpinBox;
 		QPushButton* deleteButton;
 
-		void PopulateTypeComboBox();
+		void PopulateTypeListWidget();
+		int FindTypeRow(const int type) const;
 };
 
 #endif
