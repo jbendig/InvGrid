@@ -42,6 +42,10 @@ MainWindow::MainWindow()
 	saveAsAction->setShortcuts(QKeySequence::SaveAs);
 	connect(saveAsAction,SIGNAL(triggered()),this,SLOT(SaveAs()));
 
+	QAction* quitAction = new QAction("Quit",NULL);
+	quitAction->setShortcuts(QKeySequence::Quit);
+	connect(quitAction,SIGNAL(triggered()),this,SLOT(close()));
+
 	fileMenu = menuBar()->addMenu(tr("&File"));
 	fileMenu->addAction(openAction);
 	fileMenu->addAction(openWorld1Action);
@@ -49,8 +53,13 @@ MainWindow::MainWindow()
 	fileMenu->addAction(openWorld3Action);
 	fileMenu->addAction(openWorld4Action);
 	fileMenu->addAction(openWorld5Action);
+	fileMenu->addSeparator();
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
+#ifdef __linux__
+	fileMenu->addSeparator();
+	fileMenu->addAction(quitAction);
+#endif
 
 	QAction* newItemAction = new QAction("&New Item",NULL);
 	newItemAction->setShortcut(QString("Ctrl+N"));

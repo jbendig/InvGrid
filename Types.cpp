@@ -1,4 +1,5 @@
 #include "Types.h"
+#include <cstring>
 
 string ReadString(unsigned int& index,const vector<unsigned char>& buffer)
 {
