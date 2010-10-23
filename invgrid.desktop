@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=InvGrid
+Comment=Simple Minecraft Alpha inventory editor.
+Exec=InvGrid
+Icon=invgrid
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility
