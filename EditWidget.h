@@ -18,6 +18,8 @@ class EditWidget : public QWidget
 		void UpdateItem();
 	private slots:
 		void FilterTypeList(const QString& filterText);
+		void SetDamageToZero();
+		void SetCountToSixtyFour();
 	private:
 		QWidget* newWidget;
 		QPushButton* newButton;

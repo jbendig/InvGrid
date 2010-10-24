@@ -22,8 +22,10 @@ EditWidget::EditWidget()
 	PopulateTypeListWidget();
 	damageSpinBox = new QSpinBox();
 	damageSpinBox->setRange(SHRT_MIN,SHRT_MAX);
+	QPushButton* damageZeroButton = new QPushButton("0");
 	countSpinBox = new QSpinBox();
 	countSpinBox->setRange(1,255);
+	QPushButton* countSixtyFourButton = new QPushButton("64");
 	deleteButton = new QPushButton("Delete Item");
 
 	QVBoxLayout* typeLayout = new QVBoxLayout();
@@ -31,11 +33,19 @@ EditWidget::EditWidget()
 	typeLayout->addWidget(typeSearchEdit);
 	typeLayout->addWidget(typeListWidget,1);
 
+	QHBoxLayout* damageLayout = new QHBoxLayout();
+	damageLayout->addWidget(damageSpinBox);
+	damageLayout->addWidget(damageZeroButton);
+
+	QHBoxLayout* countLayout = new QHBoxLayout();
+	countLayout->addWidget(countSpinBox);
+	countLayout->addWidget(countSixtyFourButton);
+
 	QFormLayout* formLayout = new QFormLayout();
 	formLayout->addRow(slotLabel);
 	formLayout->addRow("Type",typeLayout);
-	formLayout->addRow("Damage",damageSpinBox);
-	formLayout->addRow("Count",countSpinBox);
+	formLayout->addRow("Damage",damageLayout);
+	formLayout->addRow("Count",countLayout);
 
 	QVBoxLayout* editLayout = new QVBoxLayout();
 	editLayout->addLayout(formLayout);
@@ -55,7 +65,9 @@ EditWidget::EditWidget()
 	connect(typeSearchEdit,SIGNAL(textEdited(const QString&)),SLOT(FilterTypeList(const QString&)));
 	connect(typeListWidget,SIGNAL(currentRowChanged(int)),SIGNAL(UpdateItem()));
 	connect(damageSpinBox,SIGNAL(valueChanged(int)),SIGNAL(UpdateItem()));
+	connect(damageZeroButton,SIGNAL(pressed()),SLOT(SetDamageToZero()));
 	connect(countSpinBox,SIGNAL(valueChanged(int)),SIGNAL(UpdateItem()));
+	connect(countSixtyFourButton,SIGNAL(pressed()),SLOT(SetCountToSixtyFour()));
 	connect(newButton,SIGNAL(clicked(bool)),SIGNAL(NewItem()));
 	connect(deleteButton,SIGNAL(clicked(bool)),SIGNAL(DeleteItem()));
 }
@@ -121,6 +133,16 @@ void EditWidget::FilterTypeList(const QString& filterText)
 
 	//Make sure currently selected row is scrolled into view when ever visible.
 	typeListWidget->scrollToItem(typeListWidget->currentItem());
+}
+
+void EditWidget::SetDamageToZero()
+{
+	damageSpinBox->setValue(0);
+}
+
+void EditWidget::SetCountToSixtyFour()
+{
+	countSpinBox->setValue(64);
 }
 
 void EditWidget::PopulateTypeListWidget()
