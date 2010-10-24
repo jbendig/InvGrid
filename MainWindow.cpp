@@ -43,7 +43,7 @@ MainWindow::MainWindow()
 	connect(saveAsAction,SIGNAL(triggered()),this,SLOT(SaveAs()));
 
 	QAction* quitAction = new QAction("Quit",NULL);
-	quitAction->setShortcuts(QKeySequence::Quit);
+	quitAction->setShortcut(QString("Ctrl+Q"));
 	connect(quitAction,SIGNAL(triggered()),this,SLOT(close()));
 
 	fileMenu = menuBar()->addMenu(tr("&File"));
@@ -112,7 +112,7 @@ MainWindow::MainWindow()
 
 	setCentralWidget(centralWidget);
 	resize(780,500);
-	setWindowTitle("InvGrid 0.4 | Simple Minecraft Inventory Editor");
+	setWindowTitle("InvGrid 0.5 | Simple Minecraft Inventory Editor");
 
 	//Setup events.
 	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));

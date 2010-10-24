@@ -1,6 +1,12 @@
-InvGrid 0.4
+InvGrid 0.5
 
 InvGrid is a simple inventory editor for Minecraft. It is designed to be cross platform compatible, unlike some other editors that require mono on Linux and OS X. Only Alpha based maps are currently supported.
+
+Supported Platforms
+OS X 10.5 (Leopard, Intel)
+OS X 10.6 (Snow Leopard, Intel)
+Ubuntu 10.10 (x86 and x86_64)
+Fedora 13 (x86 and x86_64)
 
 Dependencies
 >= Qt 4.6
@@ -8,11 +14,11 @@ Dependencies
 >= zlib 1.2.3
 
 Build instructions
-ccmake .
 cmake .
 make
 
 OS X users can run build_bundle.sh to generate a bundle and dmg.
+Ubuntu and Debian users can run "cpack" without the quotes to generate a deb.
 
 Usage instructions
 Start InvGrid and go to File->Open World X, with X being the world number of your save.
