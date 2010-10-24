@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui>
 #include <map>
+#include <boost/shared_ptr.hpp>
+#include <QtGui>
 #include "NBTTag.h"
 #include "Item.h"
 using std::map;
@@ -19,6 +20,8 @@ class MainWindow : public QMainWindow
 		void NewItem();
 		void DeleteItem();
 		void UpdateItem();
+		void CopyItem();
+		void PasteItem();
 	private slots:
 		void Open();
 		void OpenWorld1();
@@ -32,6 +35,7 @@ class MainWindow : public QMainWindow
 	private:
 		//Widgets
 		QMenu* fileMenu;
+		QMenu* editMenu;
 		QMenu* inventoryMenu;
 		QTableView* inventoryTableView;
 		EditWidget* editWidget;
@@ -41,6 +45,7 @@ class MainWindow : public QMainWindow
 		NBT::Tag rootTag;
 		ItemMap itemMap;
 		QStandardItemModel model;
+		boost::shared_ptr<Item> copiedItem;
 
 		MainWindow(const MainWindow&); //No definition.
 		MainWindow& operator=(const MainWindow&); //No definition.
@@ -48,6 +53,7 @@ class MainWindow : public QMainWindow
 		bool Load(const char* filePath);
 		bool Save(const char* filePath);
 		void SelectItem(const unsigned int* slot);
+		bool GetSelectedItem(int& selectedRow,unsigned char& slot);
 		NBT::Tag* GetInventoryTag();
 		static Item TagToItem(NBT::Tag& tag);
 		static NBT::Tag ItemToTag(const Item& item);

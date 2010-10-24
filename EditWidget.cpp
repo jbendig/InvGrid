@@ -74,6 +74,7 @@ void EditWidget::SetItem(const Item* item)
 		newWidget->hide();
 
 		blockSignals(true);
+
 		slotLabel->setText(SlotName(item->slot).c_str());
 		const int typeIndex = FindTypeRow(item->id);
 		if(typeIndex == -1)
@@ -83,9 +84,6 @@ void EditWidget::SetItem(const Item* item)
 		damageSpinBox->setValue(item->damage);
 		countSpinBox->setValue(item->count);
 
-		//When an item is newly created, automatically focus the type search edit.
-		if(editIsHidden)
-			typeSearchEdit->setFocus();
 		blockSignals(false);
 	}
 }

@@ -14,23 +14,23 @@ MainWindow::MainWindow()
 	openAction->setShortcuts(QKeySequence::Open);
 	connect(openAction,SIGNAL(triggered()),this,SLOT(Open()));
 
-	QAction* openWorld1Action = new QAction("Open World 1",NULL);
+	QAction* openWorld1Action = new QAction("Open World &1",NULL);
 	openWorld1Action->setShortcut(QString("Ctrl+1"));
 	connect(openWorld1Action,SIGNAL(triggered()),this,SLOT(OpenWorld1()));
 
-	QAction* openWorld2Action = new QAction("Open World 2",NULL);
+	QAction* openWorld2Action = new QAction("Open World &2",NULL);
 	openWorld2Action->setShortcut(QString("Ctrl+2"));
 	connect(openWorld2Action,SIGNAL(triggered()),this,SLOT(OpenWorld2()));
 
-	QAction* openWorld3Action = new QAction("Open World 3",NULL);
+	QAction* openWorld3Action = new QAction("Open World &3",NULL);
 	openWorld3Action->setShortcut(QString("Ctrl+3"));
 	connect(openWorld3Action,SIGNAL(triggered()),this,SLOT(OpenWorld3()));
 
-	QAction* openWorld4Action = new QAction("Open World 4",NULL);
+	QAction* openWorld4Action = new QAction("Open World &4",NULL);
 	openWorld4Action->setShortcut(QString("Ctrl+4"));
 	connect(openWorld4Action,SIGNAL(triggered()),this,SLOT(OpenWorld4()));
 
-	QAction* openWorld5Action = new QAction("Open World 5",NULL);
+	QAction* openWorld5Action = new QAction("Open World &5",NULL);
 	openWorld5Action->setShortcut(QString("Ctrl+5"));
 	connect(openWorld5Action,SIGNAL(triggered()),this,SLOT(OpenWorld5()));
 
@@ -61,20 +61,42 @@ MainWindow::MainWindow()
 	fileMenu->addAction(quitAction);
 #endif
 
+	QAction* copyItemAction = new QAction("&Copy Item",NULL);
+	copyItemAction->setShortcut(QString("Ctrl+C"));
+	connect(copyItemAction,SIGNAL(triggered()),this,SLOT(CopyItem()));
+
+	QAction* pasteItemAction = new QAction("Paste Item",NULL);
+	pasteItemAction->setShortcut(QString("Ctrl+V"));
+	connect(pasteItemAction,SIGNAL(triggered()),this,SLOT(PasteItem()));
+
+	editMenu = menuBar()->addMenu(tr("&Edit"));
+	editMenu->addAction(copyItemAction);
+	editMenu->addAction(pasteItemAction);
+
 	QAction* newItemAction = new QAction("&New Item",NULL);
 	newItemAction->setShortcut(QString("Ctrl+N"));
 	connect(newItemAction,SIGNAL(triggered()),this,SLOT(NewItem()));
 
+	QAction* deleteItemAction = new QAction("&Delete Item",NULL);
+	QList<QKeySequence> deleteKeySequences;
+	deleteKeySequences.push_back(QKeySequence("Ctrl+D"));
+	deleteKeySequences.push_back(QKeySequence::Delete);
+	deleteItemAction->setShortcuts(deleteKeySequences);
+	connect(deleteItemAction,SIGNAL(triggered()),this,SLOT(DeleteItem()));
+
 	inventoryMenu = menuBar()->addMenu(tr("&Inventory"));
 	inventoryMenu->addAction(newItemAction);
+	inventoryMenu->addAction(deleteItemAction);
 
 	//Setup widgets.
 	inventoryTableView = new QTableView();
 	inventoryTableView->verticalHeader()->hide();
 	inventoryTableView->horizontalHeader()->setStretchLastSection(true);
 	inventoryTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+	inventoryTableView->setSelectionMode(QAbstractItemView::SingleSelection);
 	inventoryTableView->setEditTriggers(QTableView::NoEditTriggers);
 	inventoryTableView->setModel(&model);
+	inventoryTableView->setTabKeyNavigation(false);
 	connect(inventoryTableView->selectionModel(),
 			SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
 			SLOT(SelectedItem(const QItemSelection&,const QItemSelection&)));
@@ -137,14 +159,12 @@ void MainWindow::NewItem()
 void MainWindow::DeleteItem()
 {
 	//Find the selected row.
-	QModelIndexList rowsList = inventoryTableView->selectionModel()->selectedRows();
-	if(rowsList.empty())
+	int selectedRow = 0;
+	unsigned char slot = 0;
+	if(!GetSelectedItem(selectedRow,slot))
 		return;
-	const int selectedRow = rowsList[0].row();
 
 	//Find the item that belongs on that row.
-	QStandardItem* slotItem = model.item(selectedRow,0);
-	const unsigned char slot = slotItem->data().toUInt();
 	ItemMap::iterator itemIter = itemMap.find(slot);
 	if(itemIter == itemMap.end())
 		return;
@@ -164,14 +184,12 @@ void MainWindow::DeleteItem()
 void MainWindow::UpdateItem()
 {
 	//Find the selected row.
-	QModelIndexList rowsList = inventoryTableView->selectionModel()->selectedRows();
-	if(rowsList.empty())
+	int selectedRow = 0;
+	unsigned char slot = 0;
+	if(!GetSelectedItem(selectedRow,slot))
 		return;
-	const int selectedRow = rowsList[0].row();
 
 	//Find the item that belongs on that row.
-	QStandardItem* slotItem = model.item(selectedRow,0);
-	const unsigned char slot = slotItem->data().toUInt();
 	ItemMap::iterator itemIter = itemMap.find(slot);
 	if(itemIter == itemMap.end())
 		return;
@@ -188,6 +206,50 @@ void MainWindow::UpdateItem()
 	damageItem->setText(QString::number(item.damage));
 	QStandardItem* countItem = model.item(selectedRow,3);
 	countItem->setText(QString::number(item.count));
+}
+
+void MainWindow::CopyItem()
+{
+	//Find the selected row.
+	int selectedRow = 0;
+	unsigned char slot = 0;
+	if(!GetSelectedItem(selectedRow,slot))
+		return;
+
+	//Find the item that belongs on that row.
+	ItemMap::iterator itemIter = itemMap.find(slot);
+	if(itemIter == itemMap.end())
+		return;
+	copiedItem = boost::shared_ptr<Item>(new Item(itemIter->second));
+}
+
+void MainWindow::PasteItem()
+{
+
+
+	//An item must have been previously copied.
+	if(!copiedItem)
+		return;
+	
+	//Find the selected row.
+	int selectedRow = 0;
+	unsigned char slot = 0;
+	if(!GetSelectedItem(selectedRow,slot))
+		return;
+
+	//Update item. If it doesn't exist, create it.
+	itemMap[slot] = *copiedItem;
+
+	//Update table.
+	model.setItem(selectedRow,1,new QStandardItem(ItemTypeName(copiedItem->id).c_str()));
+	model.setItem(selectedRow,2,new QStandardItem(QString::number(copiedItem->damage)));
+	model.setItem(selectedRow,3,new QStandardItem(QString::number(copiedItem->count)));
+
+	//Prevent row from deselecting after model change.
+	inventoryTableView->selectRow(selectedRow);
+	
+	//Update edit widget to show the copied item.
+	editWidget->SetItem(copiedItem.get());
 }
 
 void MainWindow::Open()
@@ -404,6 +466,21 @@ void MainWindow::SelectItem(const unsigned int* slot)
 		else
 			editWidget->SetItem(NULL);
 	}
+}
+
+bool MainWindow::GetSelectedItem(int& selectedRow,unsigned char& slot)
+{
+	//Find the selected row in table.
+	QModelIndexList rowsList = inventoryTableView->selectionModel()->selectedRows();
+	if(rowsList.empty())
+		return false;
+	selectedRow = rowsList[0].row();
+
+	//Find slot of item that belongs on that row.
+	QStandardItem* slotItem = model.item(selectedRow,0);
+	slot = slotItem->data().toUInt();
+
+	return true;
 }
 
 NBT::Tag* MainWindow::GetInventoryTag()
