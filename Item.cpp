@@ -72,7 +72,7 @@ ItemTypeBimap CreateItemTypeBimap()
 {
 	ItemTypeBimap itemTypeBimap;
 #define ADD_ITEM_TYPE(value,name) itemTypeBimap.insert(ItemTypeBimap::value_type(value,name))
-	ADD_ITEM_TYPE(0,"Air");
+	//ADD_ITEM_TYPE(0,"Air"); //Commented out because it's useless and causes crashes. Left in for completion.
 	ADD_ITEM_TYPE(1,"Stone");
 	ADD_ITEM_TYPE(2,"Grass");
 	ADD_ITEM_TYPE(3,"Dirt");
