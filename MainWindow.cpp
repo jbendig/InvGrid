@@ -225,8 +225,6 @@ void MainWindow::CopyItem()
 
 void MainWindow::PasteItem()
 {
-
-
 	//An item must have been previously copied.
 	if(!copiedItem)
 		return;
@@ -238,18 +236,20 @@ void MainWindow::PasteItem()
 		return;
 
 	//Update item. If it doesn't exist, create it.
-	itemMap[slot] = *copiedItem;
+	Item newItem = *copiedItem;
+	newItem.slot = slot;
+	itemMap[slot] = newItem;
 
 	//Update table.
-	model.setItem(selectedRow,1,new QStandardItem(ItemTypeName(copiedItem->id).c_str()));
-	model.setItem(selectedRow,2,new QStandardItem(QString::number(copiedItem->damage)));
-	model.setItem(selectedRow,3,new QStandardItem(QString::number(copiedItem->count)));
+	model.setItem(selectedRow,1,new QStandardItem(ItemTypeName(newItem.id).c_str()));
+	model.setItem(selectedRow,2,new QStandardItem(QString::number(newItem.damage)));
+	model.setItem(selectedRow,3,new QStandardItem(QString::number(newItem.count)));
 
 	//Prevent row from deselecting after model change.
 	inventoryTableView->selectRow(selectedRow);
 	
 	//Update edit widget to show the copied item.
-	editWidget->SetItem(copiedItem.get());
+	editWidget->SetItem(&newItem);
 }
 
 void MainWindow::Open()
