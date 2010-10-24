@@ -121,14 +121,14 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(61,"Furnace");
 	ADD_ITEM_TYPE(62,"Burning Furnace");
 	ADD_ITEM_TYPE(63,"Sign Post");
-	ADD_ITEM_TYPE(64,"Wooden Door");
+	//ADD_ITEM_TYPE(64,"Wooden Half Door"); //Creates a rather useless half door the might cause Minecraft to crash.
 	ADD_ITEM_TYPE(65,"Ladder");
 	ADD_ITEM_TYPE(66,"Minecart Tracks");
 	ADD_ITEM_TYPE(67,"Cobblestone Stairs");
 	ADD_ITEM_TYPE(68,"Wall Sign");
 	ADD_ITEM_TYPE(69,"Lever");
 	ADD_ITEM_TYPE(70,"Stone Pressure Plate");
-	ADD_ITEM_TYPE(71,"Iron Door");
+	//ADD_ITEM_TYPE(71,"Iron Half Door"); //Creates a rather useless half door that might cause Minecraft to crash.
 	ADD_ITEM_TYPE(72,"Wooden Pressure Plate");
 	ADD_ITEM_TYPE(73,"Redstone Ore");
 	ADD_ITEM_TYPE(74,"Glowing Redstone Ore");
@@ -212,13 +212,13 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(321,"Paintings");
 	ADD_ITEM_TYPE(322,"Golden apple");
 	ADD_ITEM_TYPE(323,"Sign");
-	ADD_ITEM_TYPE(324,"Wooden door");
+	ADD_ITEM_TYPE(324,"Wooden Door");
 	ADD_ITEM_TYPE(325,"Bucket");
 	ADD_ITEM_TYPE(326,"Water bucket");
 	ADD_ITEM_TYPE(327,"Lava bucket");
 	ADD_ITEM_TYPE(328,"Mine cart");
 	ADD_ITEM_TYPE(329,"Saddle");
-	ADD_ITEM_TYPE(330,"Iron door");
+	ADD_ITEM_TYPE(330,"Iron Door");
 	ADD_ITEM_TYPE(331,"Redstone");
 	ADD_ITEM_TYPE(332,"Snowball");
 	ADD_ITEM_TYPE(333,"Boat");
