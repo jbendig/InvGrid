@@ -125,7 +125,7 @@ MainWindow::MainWindow()
 
 	setCentralWidget(centralWidget);
 	resize(780,500);
-	setWindowTitle("InvGrid 0.6 | Simple Minecraft Inventory Editor");
+	setWindowTitle("InvGrid 0.6.1 | Simple Minecraft Inventory Editor");
 
 	//Setup events.
 	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
