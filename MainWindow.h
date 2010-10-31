@@ -31,6 +31,8 @@ class MainWindow : public QMainWindow
 		void OpenWorld5();
 		void Save();
 		void SaveAs();
+		void ImportInventory();
+		void ExportInventory();
 		void SelectedItem(const QItemSelection& selected,const QItemSelection& deselected);
 	private:
 		//Widgets
@@ -52,6 +54,9 @@ class MainWindow : public QMainWindow
 		void LoadWorld(const char* worldName);
 		bool Load(const char* filePath);
 		bool Save(const char* filePath);
+		void ImportInventory(const char* filePath);
+		void ExportInventory(const char* filePath);
+		void ReloadTableModel();
 		void SelectItem(const unsigned int* slot);
 		bool GetSelectedItem(int& selectedRow,unsigned char& slot);
 		NBT::Tag* GetInventoryTag();

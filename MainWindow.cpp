@@ -1,7 +1,11 @@
 #include "MainWindow.h"
 #include <iostream>
+#include <fstream>
 #include <cassert>
 #include <boost/foreach.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 #include "EditWidget.h"
 #include "FileUtil.h"
 #include "FilePath.h"
@@ -42,6 +46,12 @@ MainWindow::MainWindow()
 	saveAsAction->setShortcuts(QKeySequence::SaveAs);
 	connect(saveAsAction,SIGNAL(triggered()),this,SLOT(SaveAs()));
 
+	QAction* importAction = new QAction(tr("Import csv"),NULL);
+	connect(importAction,SIGNAL(triggered()),this,SLOT(ImportInventory()));
+
+	QAction* exportAction = new QAction(tr("Export csv"),NULL);
+	connect(exportAction,SIGNAL(triggered()),this,SLOT(ExportInventory()));
+
 	QAction* quitAction = new QAction("Quit",NULL);
 	quitAction->setShortcut(QString("Ctrl+Q"));
 	connect(quitAction,SIGNAL(triggered()),this,SLOT(close()));
@@ -56,6 +66,9 @@ MainWindow::MainWindow()
 	fileMenu->addSeparator();
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
+	fileMenu->addSeparator();
+	fileMenu->addAction(importAction);
+	fileMenu->addAction(exportAction);
 #ifdef __linux__
 	fileMenu->addSeparator();
 	fileMenu->addAction(quitAction);
@@ -142,7 +155,7 @@ void MainWindow::NewItem()
 	//Create item.
 	Item newItem;
 	newItem.slot = slot;
-	newItem.id = 0;
+	newItem.id = 1; //Default to Stone.
 	newItem.damage = 0;
 	newItem.count = 1;
 	itemMap[slot] = newItem;
@@ -304,6 +317,76 @@ void MainWindow::SaveAs()
 		openFileName = fileName;
 }
 
+void MainWindow::ImportInventory()
+{
+	//Make sure a world has been opened.
+	NBT::Tag* inventoryTag = GetInventoryTag();
+	if(inventoryTag == NULL)
+	{
+		QMessageBox::critical(NULL,"Unable to import inventory","You must open a world file first.");
+		return;
+	}
+
+	//Ask user where import file is.
+	QString fileName = QFileDialog::getOpenFileName(this,tr("Import Inventory"));
+	if(fileName.isNull())
+		return;
+
+	//Import.
+	ImportInventory(fileName.toAscii().data());
+}
+
+void MainWindow::ExportInventory()
+{
+	//Make sure a world has been opened.
+	NBT::Tag* inventoryTag = GetInventoryTag();
+	if(inventoryTag == NULL)
+	{
+		QMessageBox::critical(NULL,"Unable to export inventory","You must open a world file first.");
+		return;
+	}
+
+	//Ask user where to save csv export file to.
+	QString fileName = QFileDialog::getSaveFileName(this,tr("Export Inventory"),"",tr("csv files (*.csv)"));
+	if(fileName.isNull())
+		return;
+
+	//Export.
+	ExportInventory(fileName.toAscii().data());
+}
+
+void MainWindow::ReloadTableModel()
+{
+	//Remove any existing rows.
+	model.removeRows(0,model.rowCount());
+
+	//Insert each item slot into table and fill out columns for row if item exists.
+	SlotNameBimap slotNameBimap = CreateSlotNameBimap();
+	model.setHorizontalHeaderLabels(
+		QStringList() << "Slot" << "Type" << "Damage" << "Count");
+	for(SlotNameBimap::const_iterator slotIter = slotNameBimap.begin();
+	   slotIter != slotNameBimap.end();
+	   ++slotIter)
+	{
+		QList<QStandardItem*> rowItems;
+		QStandardItem* slotItem = new QStandardItem(slotIter->right.c_str());
+		slotItem->setData(QVariant((unsigned int)slotIter->left));
+		rowItems.append(slotItem);
+
+		//If the item exists, fill out the remaining cells.
+		map<unsigned char,Item>::const_iterator itemIter = itemMap.find(slotIter->left);
+		if(itemIter != itemMap.end())
+		{
+			const Item& item = (*itemIter).second;
+
+			rowItems.append(new QStandardItem(ItemTypeName(item.id).c_str()));
+			rowItems.append(new QStandardItem(QString::number(item.damage)));
+			rowItems.append(new QStandardItem(QString::number(item.count)));
+		}
+		model.appendRow(rowItems);
+	}
+}
+
 void MainWindow::SelectedItem(const QItemSelection& selected,const QItemSelection&)
 {
 	QList<QModelIndex> indexes = selected.indexes();
@@ -376,30 +459,7 @@ bool MainWindow::Load(const char* filePath)
 		itemMap[item.slot] = item;
 	}
 
-	SlotNameBimap slotNameBimap = CreateSlotNameBimap();
-	model.setHorizontalHeaderLabels(
-		QStringList() << "Slot" << "Type" << "Damage" << "Count");
-	for(SlotNameBimap::const_iterator slotIter = slotNameBimap.begin();
-	   slotIter != slotNameBimap.end();
-	   ++slotIter)
-	{
-		QList<QStandardItem*> rowItems;
-		QStandardItem* slotItem = new QStandardItem(slotIter->right.c_str());
-		slotItem->setData(QVariant((unsigned int)slotIter->left));
-		rowItems.append(slotItem);
-
-		//If the item exists, fill out the remaining cells.
-		map<unsigned char,Item>::const_iterator itemIter = itemMap.find(slotIter->left);
-		if(itemIter != itemMap.end())
-		{
-			const Item& item = (*itemIter).second;
-
-			rowItems.append(new QStandardItem(ItemTypeName(item.id).c_str()));
-			rowItems.append(new QStandardItem(QString::number(item.damage)));
-			rowItems.append(new QStandardItem(QString::number(item.count)));
-		}
-		model.appendRow(rowItems);
-	}
+	ReloadTableModel();
 
 	openFileName = filePath;
 	return true;
@@ -452,6 +512,68 @@ bool MainWindow::Save(const char* filePath)
 	}
 
 	return true;
+}
+
+void MainWindow::ImportInventory(const char* filePath)
+{
+	std::ifstream inFile(filePath);
+	if(!inFile.good())
+	{
+		QMessageBox::critical(NULL,"Unable to import inventory","Unable to read file. Do you have proper permissions?");
+		return;
+	}
+
+	//Clear existing items.
+	itemMap.clear();
+
+	//Read each line of csv file and split column groups of 4 into items. Ordered by slot, id, damage, and count.
+	while(inFile.good())
+	{
+		//Read a line.
+		string line;
+		std::getline(inFile,line);
+
+		//Split line by commas into 4 fields that make up the item.
+		vector<string> columns;
+		boost::split(columns,line,boost::algorithm::is_any_of(","),boost::token_compress_on);
+		if(columns.size() != 4)
+			continue;
+
+		//Try to turn text columns into item.
+		try
+		{
+			Item newItem;
+			newItem.slot = boost::numeric_cast<unsigned char>(boost::lexical_cast<short>(columns[0]));
+			newItem.id = boost::lexical_cast<short>(columns[1]);
+			newItem.damage = boost::lexical_cast<short>(columns[2]);
+			newItem.count = boost::numeric_cast<unsigned char>(boost::lexical_cast<short>(columns[3]));
+
+			itemMap[newItem.slot] = newItem;
+		}
+		catch(...)
+		{
+			//Ignore invalid item.
+		}
+	}
+
+	//Update table.
+	ReloadTableModel();
+}
+
+void MainWindow::ExportInventory(const char* filePath)
+{
+	std::ofstream outFile(filePath);
+	if(!outFile.good())
+	{
+		QMessageBox::critical(NULL,"Unable to export inventory","Unable to write file. Do you have proper permissions?");
+		return;
+	}
+
+	BOOST_FOREACH(const ItemMap::value_type& itemIter,itemMap)
+	{
+		const Item& item = itemIter.second;
+		outFile << (int)item.slot << "," << (int)item.id << "," << (int)item.damage << "," << (int)item.count << std::endl;
+	}
 }
 
 void MainWindow::SelectItem(const unsigned int* slot)

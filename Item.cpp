@@ -143,6 +143,12 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(83,"Reed");
 	ADD_ITEM_TYPE(84,"Jukebox");
 	ADD_ITEM_TYPE(85,"Fence");
+	ADD_ITEM_TYPE(87,"Pumpkin");
+	ADD_ITEM_TYPE(87,"Red Mossy Cobblestone");
+	ADD_ITEM_TYPE(88,"Mud");
+	ADD_ITEM_TYPE(89,"Brittle Gold");
+	ADD_ITEM_TYPE(90,"Portal");
+	ADD_ITEM_TYPE(91,"Glowing Pumpkin");
 
 	ADD_ITEM_TYPE(256,"Iron Spade");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
@@ -235,6 +241,10 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(344,"Egg");
 	ADD_ITEM_TYPE(345,"Compass");
 	ADD_ITEM_TYPE(346,"Fishing Rod");
+	ADD_ITEM_TYPE(347,"Watch");
+	ADD_ITEM_TYPE(348,"Brittle Gold Dust");
+	ADD_ITEM_TYPE(349,"Raw Fish");
+	ADD_ITEM_TYPE(350,"Cooked Fish");
 	ADD_ITEM_TYPE(2256,"Gold Record");
 	ADD_ITEM_TYPE(2257,"Green Record");
 #undef ADD_ITEM_TYPE
