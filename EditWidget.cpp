@@ -17,20 +17,22 @@ EditWidget::EditWidget()
 	//Setup edit widget.
 	slotLabel = new QLabel("Slot");
 	slotLabel->setStyleSheet("QLabel {font-weight: bold; font-size: 14pt;}");
+	QLabel* typeLabel = new QLabel("Type");
 	typeSearchEdit = new QLineEdit();
 	typeListWidget = new QListWidget();
 	typeListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 	PopulateTypeListWidget();
+	QLabel* damageLabel = new QLabel("Damage");
 	damageSpinBox = new QSpinBox();
 	damageSpinBox->setRange(SHRT_MIN,SHRT_MAX);
 	QPushButton* damageZeroButton = new QPushButton("0");
+	QLabel* countLabel = new QLabel("Count");
 	countSpinBox = new QSpinBox();
 	countSpinBox->setRange(1,255);
 	QPushButton* countSixtyFourButton = new QPushButton("64");
 	deleteButton = new QPushButton("Delete Item");
 
 	QVBoxLayout* typeLayout = new QVBoxLayout();
-	typeLayout->setContentsMargins(0,2,0,0);
 	typeLayout->addWidget(typeSearchEdit);
 	typeLayout->addWidget(typeListWidget,1);
 
@@ -42,15 +44,18 @@ EditWidget::EditWidget()
 	countLayout->addWidget(countSpinBox);
 	countLayout->addWidget(countSixtyFourButton);
 
-	QFormLayout* formLayout = new QFormLayout();
-	formLayout->addRow(slotLabel);
-	formLayout->addRow("Type",typeLayout);
-	formLayout->addRow("Damage",damageLayout);
-	formLayout->addRow("Count",countLayout);
+	const Qt::Alignment labelAlignment = Qt::AlignRight | Qt::AlignTop;
+	QGridLayout* formLayout = new QGridLayout();
+	formLayout->addWidget(slotLabel,0,0,1,2);
+	formLayout->addWidget(typeLabel,1,0,labelAlignment);
+	formLayout->addLayout(typeLayout,1,1);
+	formLayout->addWidget(damageLabel,2,0,labelAlignment);
+	formLayout->addLayout(damageLayout,2,1);
+	formLayout->addWidget(countLabel,3,0,labelAlignment);
+	formLayout->addLayout(countLayout,3,1);
 
 	QVBoxLayout* editLayout = new QVBoxLayout();
 	editLayout->addLayout(formLayout);
-	editLayout->addStretch(1);
 	editLayout->addWidget(deleteButton);
 
 	editWidget = new QWidget();
