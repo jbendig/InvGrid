@@ -130,6 +130,10 @@ MainWindow::MainWindow()
 
 	//Setup events.
 	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
+	connect(editWidget,SIGNAL(NewStoneItem()),SLOT(NewStoneItem()));
+	connect(editWidget,SIGNAL(NewWoodItem()),SLOT(NewWoodItem()));
+	connect(editWidget,SIGNAL(NewGlassItem()),SLOT(NewGlassItem()));
+	connect(editWidget,SIGNAL(NewTorchesItem()),SLOT(NewTorchesItem()));
 	connect(editWidget,SIGNAL(DeleteItem()),SLOT(DeleteItem()));
 	connect(editWidget,SIGNAL(UpdateItem()),SLOT(UpdateItem()));
 }
@@ -140,34 +144,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::NewItem()
 {
-	//Find the selected row.
-	QModelIndexList rowsList = inventoryTableView->selectionModel()->selectedRows();
-	if(rowsList.empty())
-		return;
-	const int selectedRow = rowsList[0].row();
+	CreateNewItem(1,0,1); //Stone, x1
+}
 
-	//Make sure item doesn't already exist.
-	QStandardItem* slotItem = model.item(selectedRow,0);
-	const unsigned char slot = slotItem->data().toUInt();
-	ItemMap::iterator itemIter = itemMap.find(slot);
-	if(itemIter != itemMap.end())
-		return;
+void MainWindow::NewStoneItem()
+{
+	CreateNewItem(1,0,64); //Stone, x64
+}
 
-	//Create item.
-	Item newItem;
-	newItem.slot = slot;
-	newItem.id = 1; //Default to Stone.
-	newItem.damage = 0;
-	newItem.count = 1;
-	itemMap[slot] = newItem;
+void MainWindow::NewWoodItem()
+{
+	CreateNewItem(5,0,64); //Wood, x64
+}
 
-	//Update table.
-	model.setItem(selectedRow,1,new QStandardItem(ItemTypeName(newItem.id).c_str()));
-	model.setItem(selectedRow,2,new QStandardItem(QString::number(newItem.damage)));
-	model.setItem(selectedRow,3,new QStandardItem(QString::number(newItem.count)));
-	
-	//Switch from "new" to "edit" mode.
-	editWidget->SetItem(&newItem);
+void MainWindow::NewGlassItem()
+{
+	CreateNewItem(20,0,64); //Glass, x64
+}
+
+void MainWindow::NewTorchesItem()
+{
+	CreateNewItem(50,0,64); //Torch, x64
 }
 
 void MainWindow::DeleteItem()
@@ -605,6 +602,39 @@ bool MainWindow::GetSelectedItem(int& selectedRow,unsigned char& slot)
 
 	return true;
 }
+
+void MainWindow::CreateNewItem(const short type,const short damage,const unsigned char count)
+{
+	//Find the selected row.
+	QModelIndexList rowsList = inventoryTableView->selectionModel()->selectedRows();
+	if(rowsList.empty())
+		return;
+	const int selectedRow = rowsList[0].row();
+
+	//Make sure item doesn't already exist.
+	QStandardItem* slotItem = model.item(selectedRow,0);
+	const unsigned char slot = slotItem->data().toUInt();
+	ItemMap::iterator itemIter = itemMap.find(slot);
+	if(itemIter != itemMap.end())
+		return;
+
+	//Create item.
+	Item newItem;
+	newItem.slot = slot;
+	newItem.id = type;
+	newItem.damage = damage;
+	newItem.count = count;
+	itemMap[slot] = newItem;
+
+	//Update table.
+	model.setItem(selectedRow,1,new QStandardItem(ItemTypeName(newItem.id).c_str()));
+	model.setItem(selectedRow,2,new QStandardItem(QString::number(newItem.damage)));
+	model.setItem(selectedRow,3,new QStandardItem(QString::number(newItem.count)));
+	
+	//Switch from "new" to "edit" mode.
+	editWidget->SetItem(&newItem);
+}
+
 
 NBT::Tag* MainWindow::GetInventoryTag()
 {

@@ -7,9 +7,21 @@ EditWidget::EditWidget()
 {
 	//Setup new widget.
 	newButton = new QPushButton("New Item");
+	QLabel* presetItemLabel = new QLabel("Preset Items");
+	QPushButton* stoneButton = new QPushButton("Stone");
+	QPushButton* woodButton = new QPushButton("Wood");
+	QPushButton* glassButton = new QPushButton("Glass");
+	QPushButton* torchesButton = new QPushButton("Torches");
 
 	QVBoxLayout* newLayout = new QVBoxLayout();
 	newLayout->addWidget(newButton);
+	newLayout->addSpacing(45);
+	newLayout->addWidget(presetItemLabel);
+	newLayout->addWidget(stoneButton);
+	newLayout->addWidget(woodButton);
+	newLayout->addWidget(glassButton);
+	newLayout->addWidget(torchesButton);
+	newLayout->addStretch();
 
 	newWidget = new QWidget();
 	newWidget->setLayout(newLayout);
@@ -75,6 +87,10 @@ EditWidget::EditWidget()
 	connect(countSpinBox,SIGNAL(valueChanged(int)),SIGNAL(UpdateItem()));
 	connect(countSixtyFourButton,SIGNAL(pressed()),SLOT(SetCountToSixtyFour()));
 	connect(newButton,SIGNAL(clicked(bool)),SIGNAL(NewItem()));
+	connect(stoneButton,SIGNAL(clicked(bool)),SIGNAL(NewStoneItem()));
+	connect(woodButton,SIGNAL(clicked(bool)),SIGNAL(NewWoodItem()));
+	connect(glassButton,SIGNAL(clicked(bool)),SIGNAL(NewGlassItem()));
+	connect(torchesButton,SIGNAL(clicked(bool)),SIGNAL(NewTorchesItem()));
 	connect(deleteButton,SIGNAL(clicked(bool)),SIGNAL(DeleteItem()));
 }
 

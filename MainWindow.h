@@ -18,6 +18,10 @@ class MainWindow : public QMainWindow
 		~MainWindow();
 	public slots:
 		void NewItem();
+		void NewStoneItem();
+		void NewWoodItem();
+		void NewGlassItem();
+		void NewTorchesItem();
 		void DeleteItem();
 		void UpdateItem();
 		void CopyItem();
@@ -59,6 +63,7 @@ class MainWindow : public QMainWindow
 		void ReloadTableModel();
 		void SelectItem(const unsigned int* slot);
 		bool GetSelectedItem(int& selectedRow,unsigned char& slot);
+		void CreateNewItem(const short type,const short damage,const unsigned char count);
 		NBT::Tag* GetInventoryTag();
 		static Item TagToItem(NBT::Tag& tag);
 		static NBT::Tag ItemToTag(const Item& item);

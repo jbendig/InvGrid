@@ -14,6 +14,10 @@ class EditWidget : public QWidget
 		bool GetItemInfo(Item& item); //Fills out item info using edited values in widgets.
 	signals:
 		void NewItem();
+		void NewStoneItem();
+		void NewWoodItem();
+		void NewGlassItem();
+		void NewTorchesItem();
 		void DeleteItem();
 		void UpdateItem();
 	private slots:
