@@ -113,6 +113,7 @@ MainWindow::MainWindow()
 	connect(inventoryTableView->selectionModel(),
 			SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
 			SLOT(SelectedItem(const QItemSelection&,const QItemSelection&)));
+	connect(inventoryTableView,SIGNAL(doubleClicked(const QModelIndex&)),SLOT(NewItem()));
 
 	editWidget = new EditWidget();
 
