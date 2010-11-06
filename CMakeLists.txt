@@ -14,11 +14,13 @@ SET(SOURCE_FILES
 	Types.cpp
 	Item.cpp
 	MainWindow.cpp
+	InventoryWidget.cpp
 	EditWidget.cpp
 )
 
 SET(MOC_SOURCE_FILES
 	MainWindow.h
+	InventoryWidget.h
 	EditWidget.h
 )
 
