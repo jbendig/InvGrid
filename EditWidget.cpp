@@ -1,4 +1,5 @@
 #include "EditWidget.h"
+#include <iostream>
 #include <boost/foreach.hpp>
 
 EditWidget::EditWidget()
@@ -90,9 +91,15 @@ void EditWidget::SetItem(const Item* item)
 		slotLabel->setText(SlotName(item->slot).c_str());
 		const int typeIndex = FindTypeRow(item->id);
 		if(typeIndex == -1)
+		{
+			typeListWidget->setEnabled(false);
 			typeListWidget->setCurrentRow(0);
+		}
 		else
+		{
+			typeListWidget->setEnabled(true);
 			typeListWidget->setCurrentRow(typeIndex);
+		}
 		damageSpinBox->setValue(item->damage);
 		countSpinBox->setValue(item->count);
 
@@ -105,7 +112,8 @@ bool EditWidget::GetItemInfo(Item& item)
 	if(editWidget->isHidden())
 		return false;
 
-	item.id = typeListWidget->currentItem()->data(Qt::UserRole).toUInt();
+	if(typeListWidget->isEnabled())
+		item.id = typeListWidget->currentItem()->data(Qt::UserRole).toUInt();
 	item.count = countSpinBox->value();
 	item.damage = damageSpinBox->value();
 	return true;
