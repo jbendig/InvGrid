@@ -6,4 +6,4 @@ Icon=invgrid
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=Utility
+Categories=Utility;
