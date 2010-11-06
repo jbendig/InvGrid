@@ -7,6 +7,7 @@
 #include "NBTTag.h"
 #include "Item.h"
 #include "InventoryWidget.h"
+#include "MiscWidget.h"
 using std::map;
 
 class MainWindow : public QMainWindow
@@ -33,6 +34,7 @@ class MainWindow : public QMainWindow
 		QMenu* inventoryMenu;
 		QTabWidget* tabWidget;
 		InventoryWidget* inventoryWidget;
+		MiscWidget* miscWidget;
 		
 		//Data
 		QString openFileName;

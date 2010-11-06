@@ -16,12 +16,14 @@ SET(SOURCE_FILES
 	MainWindow.cpp
 	InventoryWidget.cpp
 	EditWidget.cpp
+	MiscWidget.cpp
 )
 
 SET(MOC_SOURCE_FILES
 	MainWindow.h
 	InventoryWidget.h
 	EditWidget.h
+	MiscWidget.h
 )
 
 if(APPLE)
