@@ -33,7 +33,8 @@ InventoryWidget::InventoryWidget()
 	setLayout(topLayout);
 	setEnabled(false);
 
-	//Setup events.	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
+	//Setup events.
+	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
 	connect(editWidget,SIGNAL(NewStoneItem()),SLOT(NewStoneItem()));
 	connect(editWidget,SIGNAL(NewWoodItem()),SLOT(NewWoodItem()));
 	connect(editWidget,SIGNAL(NewGlassItem()),SLOT(NewGlassItem()));
