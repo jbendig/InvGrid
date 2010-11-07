@@ -16,11 +16,15 @@ class MiscWidget : public QWidget
 		void SetTimeToSunrise();
 		void SetTimeToMidday();
 		void SetTimeToSunset();
+		void SetTimeToMidnight();
 	private:
 		QSpinBox* timeSpinBox;
 		QSpinBox* spawnXSpinBox;
 		QSpinBox* spawnYSpinBox;
 		QSpinBox* spawnZSpinBox;
+		QLineEdit* posXLineEdit;
+		QLineEdit* posYLineEdit;
+		QLineEdit* posZLineEdit;
 };
 
 #endif

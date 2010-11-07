@@ -12,6 +12,7 @@ MainWindow::MainWindow()
 	//Setup widgets.
 	inventoryWidget = new InventoryWidget();
 	miscWidget = new MiscWidget();
+	miscWidget->setEnabled(false);
 	tabWidget = new QTabWidget();
 	tabWidget->addTab(inventoryWidget,"Inventory");
 	tabWidget->addTab(miscWidget,"Misc.");
@@ -216,6 +217,7 @@ bool MainWindow::Load(const char* filePath)
 
 	//Reset item and table data so existing data doesn't collide with loaded data.
 	inventoryWidget->SetInventoryTag(NULL);
+	miscWidget->setEnabled(false);
 	rootTag = NBT::Tag();
 	openFileName = QString();
 
@@ -243,7 +245,6 @@ bool MainWindow::Load(const char* filePath)
 		QMessageBox::critical(NULL,failToLoadTitle,"Unable to parse file. Unsupported file type.");
 		return false;
 	}
-	NBT::PrintTag(rootTag);
 
 	NBT::Tag* inventoryTag = GetInventoryTag();
 	if(inventoryTag == NULL)

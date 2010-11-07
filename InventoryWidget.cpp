@@ -31,6 +31,7 @@ InventoryWidget::InventoryWidget()
 	topLayout->addWidget(editWidget);
 
 	setLayout(topLayout);
+	setEnabled(false);
 
 	//Setup events.	connect(editWidget,SIGNAL(NewItem()),SLOT(NewItem()));
 	connect(editWidget,SIGNAL(NewStoneItem()),SLOT(NewStoneItem()));
@@ -45,6 +46,7 @@ void InventoryWidget::SetInventoryTag(NBT::Tag* toInventoryTag)
 {
 	inventoryTag = toInventoryTag;
 	itemMap.clear();
+	setEnabled(inventoryTag != NULL);
 
 	if(inventoryTag != NULL)
 	{
