@@ -50,10 +50,10 @@ MainWindow::MainWindow()
 	saveAsAction->setShortcuts(QKeySequence::SaveAs);
 	connect(saveAsAction,SIGNAL(triggered()),this,SLOT(SaveAs()));
 
-	QAction* importAction = new QAction(tr("Import csv"),NULL);
+	QAction* importAction = new QAction(tr("Import Inventory (.csv)"),NULL);
 	connect(importAction,SIGNAL(triggered()),this,SLOT(ImportInventory()));
 
-	QAction* exportAction = new QAction(tr("Export csv"),NULL);
+	QAction* exportAction = new QAction(tr("Export Inventory (.csv)"),NULL);
 	connect(exportAction,SIGNAL(triggered()),this,SLOT(ExportInventory()));
 
 	QAction* quitAction = new QAction("Quit",NULL);

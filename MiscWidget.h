@@ -17,6 +17,8 @@ class MiscWidget : public QWidget
 		void SetTimeToMidday();
 		void SetTimeToSunset();
 		void SetTimeToMidnight();
+		void SetSpawnToCurrent();
+		void SetCurrentToSpawn();
 	private:
 		QSpinBox* timeSpinBox;
 		QSpinBox* spawnXSpinBox;

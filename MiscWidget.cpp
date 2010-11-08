@@ -72,16 +72,20 @@ MiscWidget::MiscWidget()
 	QPushButton* sunsetButton = new QPushButton("Sunset"); //12000
 	QPushButton* midnightButton = new QPushButton("Midnight"); //18000
 
+	QGroupBox* spawnGroupBox = new QGroupBox("Spawn Position");
 	spawnXSpinBox = new QSpinBox();
 	spawnXSpinBox->setRange(INT_MIN,INT_MAX);
 	spawnYSpinBox = new QSpinBox();
 	spawnYSpinBox->setRange(INT_MIN,INT_MAX);
 	spawnZSpinBox = new QSpinBox();
 	spawnZSpinBox->setRange(INT_MIN,INT_MAX);
+	QPushButton* setToCurrentPositionButton = new QPushButton("Set To Current Position");
 
+	QGroupBox* posGroupBox = new QGroupBox("Current Position");
 	posXLineEdit = new QLineEdit();
 	posYLineEdit = new QLineEdit();
 	posZLineEdit = new QLineEdit();
+	QPushButton* setToSpawnPositionButton = new QPushButton("Set To Spawn Position");
 
 	QHBoxLayout* timeLayout = new QHBoxLayout();
 	timeLayout->addWidget(timeSpinBox);
@@ -90,21 +94,25 @@ MiscWidget::MiscWidget()
 	timeLayout->addWidget(sunsetButton);
 	timeLayout->addWidget(midnightButton);
 
-	QHBoxLayout* spawnLayout = new QHBoxLayout();
-	spawnLayout->addWidget(spawnXSpinBox);
-	spawnLayout->addWidget(spawnYSpinBox);
-	spawnLayout->addWidget(spawnZSpinBox);
+	QFormLayout* spawnLayout = new QFormLayout();
+	spawnLayout->addRow("X",spawnXSpinBox);
+	spawnLayout->addRow("Y",spawnYSpinBox);
+	spawnLayout->addRow("Z",spawnZSpinBox);
+	spawnLayout->addRow(setToCurrentPositionButton);
+	spawnGroupBox->setLayout(spawnLayout);
 
-	QHBoxLayout* posLayout = new QHBoxLayout();
-	posLayout->addWidget(posXLineEdit);
-	posLayout->addWidget(posYLineEdit);
-	posLayout->addWidget(posZLineEdit);
+	QFormLayout* posLayout = new QFormLayout();
+	posLayout->addRow("X",posXLineEdit);
+	posLayout->addRow("Y",posYLineEdit);
+	posLayout->addRow("Z",posZLineEdit);
+	posLayout->addRow(setToSpawnPositionButton);
+	posGroupBox->setLayout(posLayout);
 
 	QFormLayout* formLayout = new QFormLayout();
 	formLayout->addRow(warningLabel);
 	formLayout->addRow("Time",timeLayout);
-	formLayout->addRow("Spawn Position",spawnLayout);
-	formLayout->addRow("Current Position",posLayout);
+	formLayout->addRow(spawnGroupBox);
+	formLayout->addRow(posGroupBox);
 
 	setLayout(formLayout);
 
@@ -113,6 +121,8 @@ MiscWidget::MiscWidget()
 	connect(middayButton,SIGNAL(clicked(bool)),SLOT(SetTimeToMidday()));
 	connect(sunsetButton,SIGNAL(clicked(bool)),SLOT(SetTimeToSunset()));
 	connect(midnightButton,SIGNAL(clicked(bool)),SLOT(SetTimeToMidnight()));
+	connect(setToCurrentPositionButton,SIGNAL(clicked(bool)),SLOT(SetSpawnToCurrent()));
+	connect(setToSpawnPositionButton,SIGNAL(clicked(bool)),SLOT(SetCurrentToSpawn()));
 }
 
 void MiscWidget::LoadFromRootTag(NBT::Tag* rootTag)
@@ -193,5 +203,31 @@ void MiscWidget::SetTimeToSunset()
 void MiscWidget::SetTimeToMidnight()
 {
 	timeSpinBox->setValue(18000);
+}
+
+void MiscWidget::SetSpawnToCurrent()
+{
+	try
+	{
+		const double posX = boost::lexical_cast<double>(posXLineEdit->text().toAscii().data());
+		const double posY = boost::lexical_cast<double>(posYLineEdit->text().toAscii().data());
+		const double posZ = boost::lexical_cast<double>(posZLineEdit->text().toAscii().data());
+
+		spawnXSpinBox->setValue((int)posX);
+		spawnYSpinBox->setValue((int)posY);
+		spawnZSpinBox->setValue((int)posZ);
+	}
+	catch(boost::bad_lexical_cast&)
+	{
+		//User edited the current position with text that doesn't make up a double.
+		//Ignoring because the big red warning label lets me.
+	}
+}
+
+void MiscWidget::SetCurrentToSpawn()
+{
+	posXLineEdit->setText(QString::number(spawnXSpinBox->value()));
+	posYLineEdit->setText(QString::number(spawnYSpinBox->value() + 2)); //Adjust +2 so player doesn't get stuck in the ground.
+	posZLineEdit->setText(QString::number(spawnZSpinBox->value()));
 }
 
