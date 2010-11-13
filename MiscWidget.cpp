@@ -116,6 +116,7 @@ MiscWidget::MiscWidget()
 	spawnGroupBox->setLayout(spawnLayout);
 
 	QFormLayout* posLayout = new QFormLayout();
+	posLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 	posLayout->addRow("X",posXLineEdit);
 	posLayout->addRow("Y",posYLineEdit);
 	posLayout->addRow("Z",posZLineEdit);
