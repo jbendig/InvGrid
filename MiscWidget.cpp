@@ -14,6 +14,8 @@ struct MiscTags
 	NBT::Tag* posXTag;
 	NBT::Tag* posYTag;
 	NBT::Tag* posZTag;
+	NBT::Tag* rotYaw;
+	NBT::Tag* rotPitch;
 };
 
 bool GetMiscTagsFromRootTag(NBT::Tag* rootTag,MiscTags& miscTags)
@@ -43,7 +45,7 @@ bool GetMiscTagsFromRootTag(NBT::Tag* rootTag,MiscTags& miscTags)
 	if(playerTag == NULL)
 		return false;
 
-	//Pos collection
+	//Pos list
 	NBT::Tag* posTag = GetChildNamedTag(playerTag,"Pos");
 	if(posTag == NULL || posTag->childTags.size() != 3)
 		return false;
@@ -52,6 +54,15 @@ bool GetMiscTagsFromRootTag(NBT::Tag* rootTag,MiscTags& miscTags)
 	miscTags.posXTag = &posTag->childTags[0];
 	miscTags.posYTag = &posTag->childTags[1];
 	miscTags.posZTag = &posTag->childTags[2];
+
+	//Rot list
+	NBT::Tag* rotTag = GetChildNamedTag(playerTag,"Rotation");
+	if(rotTag == NULL || rotTag->childTags.size() != 2)
+		return false;
+
+	//Rot
+	miscTags.rotYaw = &rotTag->childTags[0];
+	miscTags.rotPitch = &rotTag->childTags[1];
 
 	return true;
 }
@@ -62,11 +73,14 @@ MiscWidget::MiscWidget()
 : QWidget()
 {
 	//Setup widgets.
-	QLabel* warningLabel = new QLabel("Warning: Changing some of these values might cause your character to get stuck or worse!");
+	QLabel* warningLabel = new QLabel("Warning: Changing some of these values might cause your character to get stuck or worse!<br>");
 	warningLabel->setStyleSheet("QLabel {font-weight: bold; font-size: 10pt; color: #ff0000;}");
 	warningLabel->setWordWrap(true);
 	timeSpinBox = new QSpinBox();
 	timeSpinBox->setRange(0,24000);
+	QLabel* positionExplanationLabel = new QLabel("<br>A position is determined by X, Y, and Z coordiantes, with units measured in blocks.<br><br>* To move <b>north</b>, subtract from the X value. To move <b>south</b>, add to X.<br>* To move <b>down</b>, subtract from the Y value. To move <b>up</b>, add to Y.<br>* To move <b>east</b>, subtract from the Z value. To move <b>west</b>, add to Z.<br><br>In the above descriptions, \"east\" refers to the direction of sunrise, while \"north\" is the direction clouds travel.<br>");
+	directionLabel = new QLabel("");
+	positionExplanationLabel->setWordWrap(true);
 	QPushButton* sunriseButton = new QPushButton("Sunrise"); //0
 	QPushButton* middayButton = new QPushButton("Midday"); //6000
 	QPushButton* sunsetButton = new QPushButton("Sunset"); //12000
@@ -111,6 +125,8 @@ MiscWidget::MiscWidget()
 	QFormLayout* formLayout = new QFormLayout();
 	formLayout->addRow(warningLabel);
 	formLayout->addRow("Time",timeLayout);
+	formLayout->addRow(positionExplanationLabel);
+	formLayout->addRow(directionLabel);
 	formLayout->addRow(spawnGroupBox);
 	formLayout->addRow(posGroupBox);
 
@@ -142,6 +158,20 @@ void MiscWidget::LoadFromRootTag(NBT::Tag* rootTag)
 	posXLineEdit->setText(boost::lexical_cast<string>(miscTags.posXTag->doubleValue).c_str());
 	posYLineEdit->setText(boost::lexical_cast<string>(miscTags.posYTag->doubleValue).c_str());
 	posZLineEdit->setText(boost::lexical_cast<string>(miscTags.posZTag->doubleValue).c_str());
+
+	//Figure out the character's current direction.
+	const float rot = fmodf(miscTags.rotYaw->floatValue,360.0f);
+	QString directionString = "Your character is facing <b>";
+	if(rot < 45.0f || rot > 315.0f)
+		directionString += "west";
+	else if(rot < 135)
+		directionString += "north";
+	else if(rot < 225)
+		directionString += "east";
+	else
+		directionString += "south";
+	directionString += "</b> as of when this file was loaded.";
+	directionLabel->setText(directionString);
 
 	setEnabled(true);
 }

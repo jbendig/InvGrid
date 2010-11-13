@@ -21,6 +21,7 @@ class MiscWidget : public QWidget
 		void SetCurrentToSpawn();
 	private:
 		QSpinBox* timeSpinBox;
+		QLabel* directionLabel;
 		QSpinBox* spawnXSpinBox;
 		QSpinBox* spawnYSpinBox;
 		QSpinBox* spawnZSpinBox;
