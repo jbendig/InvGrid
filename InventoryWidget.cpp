@@ -49,28 +49,9 @@ void InventoryWidget::SetInventoryTag(NBT::Tag* toInventoryTag)
 	itemMap.clear();
 	setEnabled(inventoryTag != NULL);
 
-	if(inventoryTag != NULL)
-	{
-		for(unsigned int x = 0;x < inventoryTag->childTags.size();++x)
-		{
-			Item item = TagToItem(inventoryTag->childTags[x]);
-			itemMap[item.slot] = item;
-		}
-	}
+	InventoryTagToItemMap(inventoryTag,itemMap);
 
 	ReloadTableModel();
-}
-
-void InventoryWidget::SaveChangesToInventoryTag()
-{
-	if(inventoryTag == NULL)
-		return;
-
-	inventoryTag->childTags.clear();
-	BOOST_FOREACH(const ItemMap::value_type& itemIter,itemMap)
-	{
-		inventoryTag->childTags.push_back(ItemToTag(itemIter.second));
-	}
 }
 
 void InventoryWidget::ImportInventory(const char* filePath)
@@ -133,6 +114,19 @@ void InventoryWidget::ExportInventory(const char* filePath)
 		const Item& item = itemIter.second;
 		outFile << (int)item.slot << "," << (int)item.id << "," << (int)item.damage << "," << (int)item.count << std::endl;
 	}
+}
+
+void InventoryWidget::SaveChangesToInventoryTag()
+{
+	if(inventoryTag == NULL)
+		return;
+
+	ItemMapToInventoryTag(itemMap,inventoryTag);
+}
+
+void InventoryWidget::ReloadFromInventoryTag()
+{
+	SetInventoryTag(inventoryTag);
 }
 
 void InventoryWidget::NewItem()
@@ -366,84 +360,5 @@ void InventoryWidget::CreateNewItem(const short type,const short damage,const un
 	
 	//Switch from "new" to "edit" mode.
 	editWidget->SetItem(&newItem);
-}
-
-Item InventoryWidget::TagToItem(NBT::Tag& tag)
-{
-	using NBT::Tag;
-
-	Tag* idTag = GetChildNamedTag(&tag,"id");
-	assert(idTag != NULL);
-	Tag* damageTag = GetChildNamedTag(&tag,"Damage");
-	assert(damageTag != NULL);
-	Tag* countTag = GetChildNamedTag(&tag,"Count");
-	assert(countTag != NULL);
-	Tag* slotTag = GetChildNamedTag(&tag,"Slot");
-	assert(slotTag != NULL);
-
-	Item item;
-	if(idTag != NULL)
-		item.id = idTag->shortValue;
-	else
-	{
-		std::cerr << "Warning: Item found without item tag.\n";
-		PrintTag(tag);
-	}
-	if(damageTag != NULL)
-		item.damage = damageTag->shortValue;
-	else
-	{
-		std::cerr << "Warning: Item found without damage tag.\n";
-		PrintTag(tag);
-	}
-	if(countTag != NULL)
-		item.count = countTag->byteValue;
-	else
-	{
-		std::cerr << "Warning: Item found without count tag.\n";
-		PrintTag(tag);
-	}
-	if(slotTag != NULL)
-		item.slot = slotTag->byteValue;
-	else
-	{
-		std::cerr << "Warning: Item found without slot tag.\n";
-		PrintTag(tag);
-	}
-	return item;
-}
-
-NBT::Tag InventoryWidget::ItemToTag(const Item& item)
-{
-	using namespace NBT;
-
-	Tag tag;
-	tag.type = TAG_COMPOUND;
-
-	Tag idTag;
-	idTag.type = TAG_SHORT;
-	idTag.name = "id";
-	idTag.shortValue = item.id;
-	tag.childTags.push_back(idTag);
-
-	Tag damageTag;
-	damageTag.type = TAG_SHORT;
-	damageTag.name = "Damage";
-	damageTag.shortValue = item.damage;
-	tag.childTags.push_back(damageTag);
-
-	Tag countTag;
-	countTag.type = TAG_BYTE;
-	countTag.name = "Count";
-	countTag.byteValue = item.count;
-	tag.childTags.push_back(countTag);
-
-	Tag slotTag;
-	slotTag.type = TAG_BYTE;
-	slotTag.name = "Slot";
-	slotTag.byteValue = item.slot;
-	tag.childTags.push_back(slotTag);
-
-	return tag;
 }
 

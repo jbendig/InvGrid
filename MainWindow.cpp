@@ -5,17 +5,24 @@
 #include <boost/lexical_cast.hpp>
 #include "FileUtil.h"
 #include "FilePath.h"
+#include "ScriptWidget.h"
 
 MainWindow::MainWindow()
 : QMainWindow()
 {
 	//Setup widgets.
 	inventoryWidget = new InventoryWidget();
+	scriptWidget = new ScriptWidget();
 	miscWidget = new MiscWidget();
 	miscWidget->setEnabled(false);
 	tabWidget = new QTabWidget();
 	tabWidget->addTab(inventoryWidget,"Inventory");
+	tabWidget->addTab(scriptWidget,"Script");
 	tabWidget->addTab(miscWidget,"Misc.");
+
+	//Reflect changes made in inventory editor, in scripts, and vice versa.
+	connect(scriptWidget,SIGNAL(SaveToInventoryTag()),inventoryWidget,SLOT(SaveChangesToInventoryTag()));
+	connect(scriptWidget,SIGNAL(ReloadFromInventoryTag()),inventoryWidget,SLOT(ReloadFromInventoryTag()));
 
 	//Setup menu.
 	QAction* openAction = new QAction(tr("&Open"),NULL);
@@ -217,6 +224,7 @@ bool MainWindow::Load(const char* filePath)
 
 	//Reset item and table data so existing data doesn't collide with loaded data.
 	inventoryWidget->SetInventoryTag(NULL);
+	scriptWidget->SetInventoryTag(NULL);
 	miscWidget->setEnabled(false);
 	rootTag = NBT::Tag();
 	openFileName = QString();
@@ -253,6 +261,7 @@ bool MainWindow::Load(const char* filePath)
 		return false;
 	}
 	inventoryWidget->SetInventoryTag(inventoryTag);
+	scriptWidget->SetInventoryTag(inventoryTag);
 	miscWidget->LoadFromRootTag(&rootTag);
 
 	openFileName = filePath;

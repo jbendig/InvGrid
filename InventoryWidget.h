@@ -15,10 +15,11 @@ class InventoryWidget : public QWidget
 		InventoryWidget();
 
 		void SetInventoryTag(NBT::Tag* inventoryTag); //Automatically reloads displayed inventory with data from node.
-		void SaveChangesToInventoryTag();
 		void ImportInventory(const char* filePath);
 		void ExportInventory(const char* filePath);
 	public slots:
+		void SaveChangesToInventoryTag();
+		void ReloadFromInventoryTag();
 		void NewItem();
 		void NewStoneItem();
 		void NewWoodItem();
@@ -47,8 +48,6 @@ class InventoryWidget : public QWidget
 		void SelectItem(const unsigned int* slot);
 		bool GetSelectedItem(int& selectedRow,unsigned char& slot);
 		void CreateNewItem(const short type,const short damage,const unsigned char count);
-		static Item TagToItem(NBT::Tag& tag);
-		static NBT::Tag ItemToTag(const Item& item);
 };
 
 #endif

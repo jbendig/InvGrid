@@ -1,5 +1,121 @@
 #include "Item.h"
+#include <iostream>
 #include <boost/lexical_cast.hpp>
+#include <boost/foreach.hpp>
+
+namespace
+{
+
+Item TagToItem(NBT::Tag& tag)
+{
+	using NBT::Tag;
+
+	Tag* idTag = GetChildNamedTag(&tag,"id");
+	assert(idTag != NULL);
+	Tag* damageTag = GetChildNamedTag(&tag,"Damage");
+	assert(damageTag != NULL);
+	Tag* countTag = GetChildNamedTag(&tag,"Count");
+	assert(countTag != NULL);
+	Tag* slotTag = GetChildNamedTag(&tag,"Slot");
+	assert(slotTag != NULL);
+
+	Item item;
+	if(idTag != NULL)
+		item.id = idTag->shortValue;
+	else
+	{
+		std::cerr << "Warning: Item found without item tag.\n";
+		PrintTag(tag);
+	}
+	if(damageTag != NULL)
+		item.damage = damageTag->shortValue;
+	else
+	{
+		std::cerr << "Warning: Item found without damage tag.\n";
+		PrintTag(tag);
+	}
+	if(countTag != NULL)
+		item.count = countTag->byteValue;
+	else
+	{
+		std::cerr << "Warning: Item found without count tag.\n";
+		PrintTag(tag);
+	}
+	if(slotTag != NULL)
+		item.slot = slotTag->byteValue;
+	else
+	{
+		std::cerr << "Warning: Item found without slot tag.\n";
+		PrintTag(tag);
+	}
+	return item;
+}
+
+NBT::Tag ItemToTag(const Item& item)
+{
+	using namespace NBT;
+
+	Tag tag;
+	tag.type = TAG_COMPOUND;
+
+	Tag idTag;
+	idTag.type = TAG_SHORT;
+	idTag.name = "id";
+	idTag.shortValue = item.id;
+	tag.childTags.push_back(idTag);
+
+	Tag damageTag;
+	damageTag.type = TAG_SHORT;
+	damageTag.name = "Damage";
+	damageTag.shortValue = item.damage;
+	tag.childTags.push_back(damageTag);
+
+	Tag countTag;
+	countTag.type = TAG_BYTE;
+	countTag.name = "Count";
+	countTag.byteValue = item.count;
+	tag.childTags.push_back(countTag);
+
+	Tag slotTag;
+	slotTag.type = TAG_BYTE;
+	slotTag.name = "Slot";
+	slotTag.byteValue = item.slot;
+	tag.childTags.push_back(slotTag);
+
+	return tag;
+}
+
+};
+
+bool InventoryTagToItemMap(NBT::Tag* inventoryTag,ItemMap& itemMap)
+{
+	itemMap.clear();
+
+	if(inventoryTag == NULL)
+		return false;
+
+	BOOST_FOREACH(NBT::Tag& childTag,inventoryTag->childTags)
+	{
+		Item item = TagToItem(childTag);
+		itemMap[item.slot] = item;
+	}
+
+	return true;
+}
+
+bool ItemMapToInventoryTag(const ItemMap& itemMap,NBT::Tag* inventoryTag)
+{
+	if(inventoryTag == NULL)
+		return false;
+
+	inventoryTag->childTags.clear();
+	BOOST_FOREACH(const ItemMap::value_type& itemIter,itemMap)
+	{
+		inventoryTag->childTags.push_back(ItemToTag(itemIter.second));
+	}
+
+	return true;
+}
 
 SlotNameBimap CreateSlotNameBimap()
 {

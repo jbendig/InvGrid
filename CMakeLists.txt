@@ -4,6 +4,7 @@ PROJECT(InvGrid)
 
 FIND_PACKAGE(ZLIB REQUIRED)
 FIND_PACKAGE(Boost REQUIRED)
+FIND_PACKAGE(Lua51 REQUIRED)
 FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE(${QT_USE_FILE})
 
@@ -17,6 +18,8 @@ SET(SOURCE_FILES
 	InventoryWidget.cpp
 	EditWidget.cpp
 	MiscWidget.cpp
+	ScriptWidget.cpp
+	ScriptRunner.cpp
 )
 
 SET(MOC_SOURCE_FILES
@@ -24,6 +27,7 @@ SET(MOC_SOURCE_FILES
 	InventoryWidget.h
 	EditWidget.h
 	MiscWidget.h
+	ScriptWidget.h
 )
 
 if(APPLE)
@@ -37,7 +41,7 @@ QT4_WRAP_CPP(SOURCE_FILES ${MOC_SOURCE_FILES})
 
 ADD_EXECUTABLE(InvGrid ${SOURCE_FILES} ${PLATFORM_SOURCE_FILES})
 TARGET_LINK_LIBRARIES(InvGrid ${QT_LIBRARIES})
-TARGET_LINK_LIBRARIES(InvGrid z)
+TARGET_LINK_LIBRARIES(InvGrid z lua)
 INSTALL(PROGRAMS InvGrid DESTINATION bin)
 INSTALL(FILES invgrid.desktop DESTINATION share/applications)
 INSTALL(FILES invgrid.png DESTINATION share/pixmaps)
