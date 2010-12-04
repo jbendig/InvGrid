@@ -133,6 +133,34 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+	//If a world isn't open, nothing to save so program can exit immediately.
+	NBT::Tag* inventoryTag = GetInventoryTag();
+	if(inventoryTag == NULL)
+	{
+		event->accept();
+		return;
+	}
+
+	//Otherwise, ask the user if they want to save...even if they JUST saved.
+	QMessageBox messageBox;
+	messageBox.setText("Do you want to save your changes?");
+	messageBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+	messageBox.setDefaultButton(QMessageBox::Save);
+	const int result = messageBox.exec();
+	if(result == QMessageBox::Cancel)
+	{
+		event->ignore();
+		return;
+	}
+
+	if(result == QMessageBox::Save)
+		Save();
+
+	event->accept();
+}
+
 void MainWindow::Open()
 {
 	QString fileName = QFileDialog::getOpenFileName(this,tr("Open NBT"));

@@ -17,6 +17,8 @@ class MainWindow : public QMainWindow
 	public:
 		MainWindow();
 		~MainWindow();
+
+		void closeEvent(QCloseEvent* event);
 	private slots:
 		void Open();
 		void OpenWorld1();
