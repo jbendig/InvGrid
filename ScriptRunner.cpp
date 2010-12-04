@@ -175,6 +175,41 @@ int ScriptRunner_HaveItem(lua_State* luaState)
 	lua_pushboolean(luaState,haveItem);
 	return 1;
 }
+
+int ScriptRunner_RemoveItem(lua_State* luaState)
+{
+	const int argc = lua_gettop(luaState);
+	if(argc != 1 || !lua_isnumber(luaState,1))
+	{
+		lua_pushstring(luaState,"Invalid argument, expected RemoveItem(integer slot)");
+		lua_error(luaState);
+	}
+
+	lua_Integer inventorySlot = lua_tointeger(luaState,1);
+
+	ItemMap::iterator itemMapIter = itemMap.find(inventorySlot);
+	if(itemMapIter == itemMap.end())
+	{
+		lua_pushboolean(luaState,false);
+		return 1;
+	}
+
+	itemMap.erase(itemMapIter);
+	lua_pushboolean(luaState,true);
+	return 1;
+}
+
+int ScriptRunner_ClearInventory(lua_State* luaState)
+{
+	//Ignore passed in parameters.
+
+	//Remove all items from inventory.
+	itemMap.clear();
+	
+	//Nothing to return.
+	return 0;
+}
+
 };
 
 ScriptRunner::ScriptRunner()
@@ -190,6 +225,7 @@ ScriptRunner::ScriptRunner()
 	lua_register(luaState,"GetItem",ScriptRunner_GetItem);
 	lua_register(luaState,"SetItem",ScriptRunner_SetItem);
 	lua_register(luaState,"HaveItem",ScriptRunner_HaveItem);
+	lua_register(luaState,"ClearInventory",ScriptRunner_ClearInventory);
 
 	//Setup constants.
 	std::stringstream constSStream;

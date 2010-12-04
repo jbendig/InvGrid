@@ -33,6 +33,7 @@ class MainWindow : public QMainWindow
 		QMenu* fileMenu;
 		QMenu* editMenu;
 		QMenu* inventoryMenu;
+		QMenu* scriptMenu;
 		QTabWidget* tabWidget;
 		InventoryWidget* inventoryWidget;
 		ScriptWidget* scriptWidget;

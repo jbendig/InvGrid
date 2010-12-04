@@ -19,9 +19,9 @@ class ScriptWidget : public QWidget
 	signals:
 		void SaveToInventoryTag(); //Emitted before script is run so script can see the current state of the inventory.
 		void ReloadFromInventoryTag(); //Emitted after script is run so other widgets can stay in sync.
-	private slots:
+	public slots:
 		void RunScript();
-		void ValidateScript();
+		void GenerateScriptFromInventory();
 	private:
 		QPlainTextEdit* scriptTextEdit;
 		QTextEdit* consoleTextEdit;

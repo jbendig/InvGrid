@@ -112,6 +112,17 @@ MainWindow::MainWindow()
 	inventoryMenu->addAction(newItemAction);
 	inventoryMenu->addAction(deleteItemAction);
 
+	QAction* runAction = new QAction("&Run",NULL);
+	runAction->setShortcut(QKeySequence("Ctrl+R"));
+	connect(runAction,SIGNAL(triggered()),scriptWidget,SLOT(RunScript()));
+
+	QAction* generateScriptFromInventoryAction = new QAction("Generate Script From Inventory",NULL);
+	connect(generateScriptFromInventoryAction,SIGNAL(triggered()),scriptWidget,SLOT(GenerateScriptFromInventory()));
+
+	scriptMenu = menuBar()->addMenu("&Script");
+	scriptMenu->addAction(runAction);
+	scriptMenu->addAction(generateScriptFromInventoryAction);
+
 	//Setup main window.
 	setCentralWidget(tabWidget);
 	resize(780,500);

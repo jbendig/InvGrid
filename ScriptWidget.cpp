@@ -1,6 +1,9 @@
 #include "ScriptWidget.h"
 #include <string>
+#include <sstream>
+#include <boost/foreach.hpp>
 #include "ScriptRunner.h"
+#include "Item.h"
 using std::string;
 
 ScriptWidget::ScriptWidget()
@@ -37,6 +40,7 @@ ScriptWidget::ScriptWidget()
 
 ScriptWidget::~ScriptWidget()
 {
+	//TODO: Save script to be auto-loaded on start.
 }
 
 void ScriptWidget::SetInventoryTag(NBT::Tag* toInventoryTag)
@@ -69,7 +73,30 @@ void ScriptWidget::RunScript()
 	emit ReloadFromInventoryTag();
 }
 
-void ScriptWidget::ValidateScript()
+void ScriptWidget::GenerateScriptFromInventory()
 {
+	//Get the current state of the inventory.
+	emit SaveToInventoryTag();
+
+	//Make the inventory easier to work with.
+	ItemMap itemMap;
+	InventoryTagToItemMap(inventoryTag,itemMap);
+
+	//Generate script that clears the current inventory and sets the items whatever the inventory is when this is run.
+	std::stringstream scriptStream;
+	scriptStream << "ClearInventory()\n\n";
+
+	BOOST_FOREACH(ItemMap::const_reference itemIter,itemMap)
+	{
+		const Item& item = itemIter.second;
+		scriptStream << "SetItem(" <<
+			(int)item.slot<< "," <<
+			(int)item.id << "," <<
+			(int)item.damage << "," <<
+			(int)item.count << ")\n";
+
+	}
+
+	scriptTextEdit->setPlainText(scriptStream.str().c_str());
 }
 
