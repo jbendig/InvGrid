@@ -272,7 +272,7 @@ void MiscWidget::SetSpawnToCurrent()
 void MiscWidget::SetCurrentToSpawn()
 {
 	posXLineEdit->setText(QString::number(spawnXSpinBox->value()));
-	posYLineEdit->setText(QString::number(spawnYSpinBox->value() + 2)); //Adjust +2 so player doesn't get stuck in the ground.
+	posYLineEdit->setText(QString::number(spawnYSpinBox->value()));
 	posZLineEdit->setText(QString::number(spawnZSpinBox->value()));
 }
 
