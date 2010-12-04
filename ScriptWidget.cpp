@@ -58,6 +58,7 @@ void ScriptWidget::RunScript()
 	ScriptRunner scriptRunner;
 	if(!scriptRunner.Run(inventoryTag,scriptString))
 	{
+		consoleTextEdit->append(scriptRunner.Output().c_str());
 		consoleTextEdit->append(scriptRunner.Error().c_str());
 		return;
 	}

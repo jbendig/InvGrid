@@ -234,9 +234,18 @@ bool ScriptRunner::Run(NBT::Tag* inventoryTag,const string script)
 
 	//Run script, redirecting anything outputted by script from stdout to output.
 	RedirectStdOut redirect;
-	if(luaL_dostring(luaState,script.c_str()) != 0)
+	if(luaL_loadstring(luaState,script.c_str()) != 0)
 	{
-		errorString = "An error has occurred.";
+		//PROBABLY a syntax error, but could be a memory error....
+		errorString = "Syntax error.\n";
+		errorString += lua_tostring(luaState,-1);
+		return false;
+	}
+	if(lua_pcall(luaState,0,LUA_MULTRET,0) != 0)
+	{
+		outputString = redirect.Done();
+		errorString = "An error has occurred.\n";
+		errorString += lua_tostring(luaState,-1);
 		return false;
 	}
 	outputString = redirect.Done();
