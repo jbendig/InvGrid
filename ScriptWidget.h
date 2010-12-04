@@ -26,6 +26,9 @@ class ScriptWidget : public QWidget
 		QPlainTextEdit* scriptTextEdit;
 		QTextEdit* consoleTextEdit;
 		NBT::Tag* inventoryTag;
+
+		void SaveScript(const QString fileName);
+		void LoadScript(const QString fileName);
 };
 
 #endif

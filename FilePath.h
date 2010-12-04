@@ -7,6 +7,7 @@ using std::string;
 namespace FilePath
 {
 	string GetMinecraftSavesDirectory();
+	string GetInvGridSettingsDirectory();
 };
 
 #endif

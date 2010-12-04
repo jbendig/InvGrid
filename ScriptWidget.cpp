@@ -4,6 +4,7 @@
 #include <boost/foreach.hpp>
 #include "ScriptRunner.h"
 #include "Item.h"
+#include "FilePath.h"
 using std::string;
 
 ScriptWidget::ScriptWidget()
@@ -36,11 +37,19 @@ ScriptWidget::ScriptWidget()
 
 	//Connect events.
 	connect(runButton,SIGNAL(pressed()),SLOT(RunScript()));
+
+	//Load previous lua script if one is available.
+	const QString settingsDir = FilePath::GetInvGridSettingsDirectory().c_str();
+	LoadScript(settingsDir + "auto.lua");
 }
 
 ScriptWidget::~ScriptWidget()
 {
-	//TODO: Save script to be auto-loaded on start.
+	//Save current script so it can be reloaded on start.
+	const QString settingsDir = FilePath::GetInvGridSettingsDirectory().c_str();
+	QDir("").mkpath(settingsDir);
+
+	SaveScript(settingsDir + "auto.lua");
 }
 
 void ScriptWidget::SetInventoryTag(NBT::Tag* toInventoryTag)
@@ -98,5 +107,25 @@ void ScriptWidget::GenerateScriptFromInventory()
 	}
 
 	scriptTextEdit->setPlainText(scriptStream.str().c_str());
+}
+
+void ScriptWidget::SaveScript(const QString fileName)
+{
+	QFile file(fileName);
+	if(!file.open(QFile::WriteOnly | QFile::Truncate))
+		return;
+
+	QTextStream textStream(&file);
+	textStream << scriptTextEdit->toPlainText();
+}
+
+void ScriptWidget::LoadScript(const QString fileName)
+{
+	QFile file(fileName);
+	if(!file.open(QFile::ReadOnly))
+		return;
+
+	QTextStream textStream(&file);
+	scriptTextEdit->setPlainText(textStream.readAll());
 }
 
