@@ -11,6 +11,7 @@ struct MiscTags
 	NBT::Tag* spawnXTag;
 	NBT::Tag* spawnYTag;
 	NBT::Tag* spawnZTag;
+	NBT::Tag* healthTag;
 	NBT::Tag* posXTag;
 	NBT::Tag* posYTag;
 	NBT::Tag* posZTag;
@@ -43,6 +44,11 @@ bool GetMiscTagsFromRootTag(NBT::Tag* rootTag,MiscTags& miscTags)
 	//Player
 	NBT::Tag* playerTag = GetChildNamedTag(dataTag,"Player");
 	if(playerTag == NULL)
+		return false;
+
+	//Health
+	miscTags.healthTag = GetChildNamedTag(playerTag,"Health");
+	if(miscTags.healthTag == NULL)
 		return false;
 
 	//Pos list
@@ -78,13 +84,15 @@ MiscWidget::MiscWidget()
 	warningLabel->setWordWrap(true);
 	timeSpinBox = new QSpinBox();
 	timeSpinBox->setRange(0,24000);
-	QLabel* positionExplanationLabel = new QLabel("<br>A position is determined by X, Y, and Z coordiantes, with units measured in blocks.<br><br>* To move <b>north</b>, subtract from the X value. To move <b>south</b>, add to X.<br>* To move <b>down</b>, subtract from the Y value. To move <b>up</b>, add to Y.<br>* To move <b>east</b>, subtract from the Z value. To move <b>west</b>, add to Z.<br><br>In the above descriptions, \"east\" refers to the direction of sunrise, while \"north\" is the direction clouds travel.<br>");
-	directionLabel = new QLabel("");
-	positionExplanationLabel->setWordWrap(true);
 	QPushButton* sunriseButton = new QPushButton("Sunrise"); //0
 	QPushButton* middayButton = new QPushButton("Midday"); //6000
 	QPushButton* sunsetButton = new QPushButton("Sunset"); //12000
 	QPushButton* midnightButton = new QPushButton("Midnight"); //18000
+	healthSpinBox = new QSpinBox();
+	healthSpinBox->setRange(0,1000);
+	QLabel* positionExplanationLabel = new QLabel("<br>A position is determined by X, Y, and Z coordiantes, with units measured in blocks.<br><br>* To move <b>north</b>, subtract from the X value. To move <b>south</b>, add to X.<br>* To move <b>down</b>, subtract from the Y value. To move <b>up</b>, add to Y.<br>* To move <b>east</b>, subtract from the Z value. To move <b>west</b>, add to Z.<br><br>In the above descriptions, \"east\" refers to the direction of sunrise, while \"north\" is the direction clouds travel.<br>");
+	positionExplanationLabel->setWordWrap(true);
+	directionLabel = new QLabel("");
 
 	QGroupBox* spawnGroupBox = new QGroupBox("Spawn Position");
 	spawnXSpinBox = new QSpinBox();
@@ -126,6 +134,7 @@ MiscWidget::MiscWidget()
 	QFormLayout* formLayout = new QFormLayout();
 	formLayout->addRow(warningLabel);
 	formLayout->addRow("Time",timeLayout);
+	formLayout->addRow("Health",healthSpinBox);
 	formLayout->addRow(positionExplanationLabel);
 	formLayout->addRow(directionLabel);
 	formLayout->addRow(spawnGroupBox);
@@ -151,6 +160,8 @@ void MiscWidget::LoadFromRootTag(NBT::Tag* rootTag)
 
 	//Set control values to those found in tags.
 	timeSpinBox->setValue(miscTags.timeTag->longValue % 24000);
+
+	healthSpinBox->setValue(miscTags.healthTag->shortValue);
 
 	spawnXSpinBox->setValue(miscTags.spawnXTag->intValue);
 	spawnYSpinBox->setValue(miscTags.spawnYTag->intValue);
@@ -187,6 +198,9 @@ void MiscWidget::SaveToRootTag(NBT::Tag* rootTag)
 	//Set tag values to those found in controls.
 	miscTags.timeTag->type = NBT::TAG_LONG;
 	miscTags.timeTag->longValue = timeSpinBox->value();
+
+	miscTags.healthTag->type = NBT::TAG_SHORT;
+	miscTags.healthTag->shortValue = healthSpinBox->value();
 
 	miscTags.spawnXTag->type = NBT::TAG_INT;
 	miscTags.spawnXTag->intValue = spawnXSpinBox->value();
