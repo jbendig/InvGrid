@@ -1,26 +1,39 @@
 #include "FilePath.h"
 #include <Foundation/Foundation.h>
 
+namespace
+{
+	string GetSupportDirectory()
+	{
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+
+		NSArray* filePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,NSUserDomainMask,true);
+		if([filePathArray count] == 0)
+		{
+			[pool release];
+			return "";
+		}
+
+		NSString* pathString = [filePathArray objectAtIndex:0];
+		
+		const string result([pathString UTF8String]);
+		[pool release];
+
+		return result;
+	}
+}
+
 namespace FilePath
 {
 
 string GetMinecraftSavesDirectory()
 {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	return GetSupportDirectory() + "/minecraft/saves/";
+}
 
-	NSArray* filePathArray = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,NSUserDomainMask,true);
-	if([filePathArray count] == 0)
-	{
-		[pool release];
-		return "";
-	}
-
-	NSString* minecraftSavesPath = [filePathArray objectAtIndex:0];
-	
-	const string result([minecraftSavesPath UTF8String]);
-	[pool release];
-
-	return result + "/minecraft/saves/";
+string GetInvGridSettingsDirectory()
+{
+	return GetSupportDirectory() + "/invgrid/";
 }
 
 };
