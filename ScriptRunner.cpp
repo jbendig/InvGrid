@@ -35,6 +35,7 @@ class RedirectStdOut
 				return;
 
 			redirecting = true;
+			oldStdOut = dup(STDOUT_FILENO);
 			dup2(pipePair[1],STDOUT_FILENO);
 			::close(pipePair[1]);
 		}
