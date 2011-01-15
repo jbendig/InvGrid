@@ -223,7 +223,7 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(32,"Magenta Cloth");
 	ADD_ITEM_TYPE(33,"Pink Cloth");
 	ADD_ITEM_TYPE(34,"Black Cloth");
-	ADD_ITEM_TYPE(35,"Gray Cloth / Wool");
+	ADD_ITEM_TYPE(35,"Gray Cloth");
 	ADD_ITEM_TYPE(36,"Cloth");
 	ADD_ITEM_TYPE(37,"Yellow flower");
 	ADD_ITEM_TYPE(38,"Red Rose");
