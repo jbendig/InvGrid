@@ -49,7 +49,7 @@ INSTALL(FILES invgrid.png DESTINATION share/pixmaps)
 
 SET(CPACK_GENERATOR DEB)
 SET(CPACK_PACKAGE_NAME InvGrid)
-SET(CPACK_PACKAGE_VERSION 0.8)
+SET(CPACK_PACKAGE_VERSION 0.8.1)
 SET(CPACK_PACKAGE_CONTACT "James Bendig <jbendig@starbytesoftware.com>")
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "InvGrid is a simple inventory editor for Minecraft.")

@@ -126,7 +126,7 @@ MainWindow::MainWindow()
 	//Setup main window.
 	setCentralWidget(tabWidget);
 	resize(780,500);
-	setWindowTitle("InvGrid 0.8 | Simple Minecraft Inventory Editor");
+	setWindowTitle("InvGrid 0.8.1 | Simple Minecraft Inventory Editor");
 }
 
 MainWindow::~MainWindow()
