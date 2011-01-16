@@ -214,18 +214,18 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(23,"Dispenser");
 	ADD_ITEM_TYPE(24,"Sandstone");
 	ADD_ITEM_TYPE(25,"Note Block");
-	ADD_ITEM_TYPE(26,"Aqua Green Cloth");
-	ADD_ITEM_TYPE(27,"Cyan Cloth");
-	ADD_ITEM_TYPE(28,"Blue Cloth");
-	ADD_ITEM_TYPE(29,"Purple Cloth");
-	ADD_ITEM_TYPE(30,"Indigo Cloth");
-	ADD_ITEM_TYPE(31,"Violet Cloth");
-	ADD_ITEM_TYPE(32,"Magenta Cloth");
-	ADD_ITEM_TYPE(33,"Pink Cloth");
-	ADD_ITEM_TYPE(34,"Black Cloth");
+	//ADD_ITEM_TYPE(26,"Aqua Green Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(27,"Cyan Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(28,"Blue Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(29,"Purple Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(30,"Indigo Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(31,"Violet Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(32,"Magenta Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(33,"Pink Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(34,"Black Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
 	ADD_ITEM_TYPE(35,"Gray Cloth");
-	ADD_ITEM_TYPE(36,"Cloth");
-	ADD_ITEM_TYPE(37,"Yellow flower");
+	//ADD_ITEM_TYPE(36,"Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	ADD_ITEM_TYPE(37,"Yellow Flower");
 	ADD_ITEM_TYPE(38,"Red Rose");
 	ADD_ITEM_TYPE(39,"Brown Mushroom");
 	ADD_ITEM_TYPE(40,"Red Mushroom");
