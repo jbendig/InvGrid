@@ -1,4 +1,5 @@
 [Desktop Entry]
+Encoding=UTF-8
 Name=InvGrid
 Comment=Simple Minecraft Alpha inventory editor.
 Exec=InvGrid

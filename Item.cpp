@@ -1,7 +1,11 @@
 #include "Item.h"
 #include <iostream>
+#include <fstream>
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
+#include <boost/algorithm/string.hpp>
+#include "FilePath.h"
+using std::ifstream;
 
 namespace
 {
@@ -214,17 +218,8 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(23,"Dispenser");
 	ADD_ITEM_TYPE(24,"Sandstone");
 	ADD_ITEM_TYPE(25,"Note Block");
-	//ADD_ITEM_TYPE(26,"Aqua Green Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(27,"Cyan Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(28,"Blue Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(29,"Purple Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(30,"Indigo Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(31,"Violet Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(32,"Magenta Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(33,"Pink Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	//ADD_ITEM_TYPE(34,"Black Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
-	ADD_ITEM_TYPE(35,"Gray Cloth");
-	//ADD_ITEM_TYPE(36,"Cloth"); //Not a real item, adjust Gray Cloth's damage instead.
+	//ADD_ITEM_TYPE(26,"Bed"); //World block, not for inventory.
+	ADD_ITEM_TYPE(35,"Wool");
 	ADD_ITEM_TYPE(37,"Yellow Flower");
 	ADD_ITEM_TYPE(38,"Red Rose");
 	ADD_ITEM_TYPE(39,"Brown Mushroom");
@@ -254,7 +249,7 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(63,"Sign Post");
 	//ADD_ITEM_TYPE(64,"Wooden Door"); //Creates a rather useless half door that might cause Minecraft to crash.
 	ADD_ITEM_TYPE(65,"Ladder");
-	ADD_ITEM_TYPE(66,"Minecart Tracks");
+	ADD_ITEM_TYPE(66,"Rails");
 	ADD_ITEM_TYPE(67,"Cobblestone Stairs");
 	ADD_ITEM_TYPE(68,"Wall Sign");
 	ADD_ITEM_TYPE(69,"Lever");
@@ -281,6 +276,8 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(90,"Portal");
 	ADD_ITEM_TYPE(91,"Jack-O-Lantern");
 	ADD_ITEM_TYPE(92,"Cake Block");
+	//ADD_ITEM_TYPE(93,"Redstone Repeater (\"off\" state)"); //Same as "Redstone Repeater" below
+	//ADD_ITEM_TYPE(94,"Redstone Repeater (\"on\" state)"); //Same as "Redstone Repeater" below
 
 	ADD_ITEM_TYPE(256,"Iron Shovel");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
@@ -377,13 +374,49 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(348,"Glowstone Dust");
 	ADD_ITEM_TYPE(349,"Raw Fish");
 	ADD_ITEM_TYPE(350,"Cooked Fish");
-	ADD_ITEM_TYPE(351,"Sack");
+	ADD_ITEM_TYPE(351,"Dye");
 	ADD_ITEM_TYPE(352,"Bone");
 	ADD_ITEM_TYPE(353,"Sugar");
 	ADD_ITEM_TYPE(354,"Cake");
+	ADD_ITEM_TYPE(355,"Bed");
+	ADD_ITEM_TYPE(356,"Redstone Repeater");
 	ADD_ITEM_TYPE(2256,"Gold Music Disc");
 	ADD_ITEM_TYPE(2257,"Green Music Disc");
 #undef ADD_ITEM_TYPE
+
+	//Try and load a custom comma delimitered file that can overwrite default items.
+	//File has two columns in the order of: value,name
+	//Value must be a number and name should only use ASCII characters.
+	std::ifstream inFile((FilePath::GetInvGridSettingsDirectory() + "/items.csv").c_str());
+	while(inFile.good())
+	{
+		//Read a line.
+		string line;
+		std::getline(inFile,line);
+
+		//Split line by commas into 4 fields that make up the item.
+		vector<string> columns;
+		boost::split(columns,line,boost::algorithm::is_any_of(","),boost::token_compress_on);
+		if(columns.size() != 2)
+			continue;
+
+		try
+		{
+			const short value = boost::lexical_cast<short>(columns[0]);
+			const string name = columns[1];
+
+			//Delete any items that match value OR name.
+			itemTypeBimap.left.erase(value);
+			itemTypeBimap.right.erase(name);
+			
+			//Add item or overwrite if one already exists with that value.
+			itemTypeBimap.insert(ItemTypeBimap::value_type(value,name));
+		}
+		catch(...)
+		{
+			//Invalid row, skip.
+		}
+	}
 
 	return itemTypeBimap;
 }
