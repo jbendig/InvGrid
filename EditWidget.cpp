@@ -34,9 +34,13 @@ EditWidget::EditWidget()
 	typeListWidget = new QListWidget();
 	typeListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 	PopulateTypeListWidget();
-	QLabel* damageLabel = new QLabel("Damage");
+	damageLabel = new QLabel("Damage");
 	damageSpinBox = new QSpinBox();
 	damageSpinBox->setRange(SHRT_MIN,SHRT_MAX);
+	/* TODO: To be completed someday when details are added.
+	detailLabel = new QLabel("Property");
+	detailComboBox = new QComboBox();
+	*/
 	QPushButton* damageZeroButton = new QPushButton("0");
 	QLabel* countLabel = new QLabel("Count");
 	countSpinBox = new QSpinBox();
@@ -63,8 +67,12 @@ EditWidget::EditWidget()
 	formLayout->addLayout(typeLayout,1,1);
 	formLayout->addWidget(damageLabel,2,0,labelAlignment);
 	formLayout->addLayout(damageLayout,2,1);
-	formLayout->addWidget(countLabel,3,0,labelAlignment);
-	formLayout->addLayout(countLayout,3,1);
+	/* TODO: To be completed someday when details are added.
+	formLayout->addWidget(detailLabel,3,0,labelAlignment);
+	formLayout->addWidget(detailComboBox,3,1);
+	*/
+	formLayout->addWidget(countLabel,4,0,labelAlignment);
+	formLayout->addLayout(countLayout,4,1);
 
 	QVBoxLayout* editLayout = new QVBoxLayout();
 	editLayout->addLayout(formLayout);
@@ -83,6 +91,9 @@ EditWidget::EditWidget()
 	connect(typeSearchEdit,SIGNAL(textEdited(const QString&)),SLOT(FilterTypeList(const QString&)));
 	connect(typeListWidget,SIGNAL(currentRowChanged(int)),SIGNAL(UpdateItem()));
 	connect(damageSpinBox,SIGNAL(valueChanged(int)),SIGNAL(UpdateItem()));
+	/* TODO: To be completed someday when details are added.
+	connect(detailComboBox,SIGNAL(currentIndexChanged(int)),SIGNAL(UpdateItem()));
+	*/
 	connect(damageZeroButton,SIGNAL(pressed()),SLOT(SetDamageToZero()));
 	connect(countSpinBox,SIGNAL(valueChanged(int)),SIGNAL(UpdateItem()));
 	connect(countSixtyFourButton,SIGNAL(pressed()),SLOT(SetCountToSixtyFour()));

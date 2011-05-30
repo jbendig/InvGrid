@@ -21,11 +21,6 @@ class MainWindow : public QMainWindow
 		void closeEvent(QCloseEvent* event);
 	private slots:
 		void Open();
-		void OpenWorld1();
-		void OpenWorld2();
-		void OpenWorld3();
-		void OpenWorld4();
-		void OpenWorld5();
 		void Save();
 		void SaveAs();
 		void ImportInventory();

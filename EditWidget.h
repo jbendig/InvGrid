@@ -32,7 +32,10 @@ class EditWidget : public QWidget
 		QLabel* slotLabel;
 		QLineEdit* typeSearchEdit;
 		QListWidget* typeListWidget;
+		QLabel* damageLabel;
 		QSpinBox* damageSpinBox;
+		QLabel* detailLabel;
+		QComboBox* detailComboBox;
 		QSpinBox* countSpinBox;
 		QPushButton* deleteButton;
 

@@ -201,9 +201,9 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(6,"Sapling");
 	ADD_ITEM_TYPE(7,"Bedrock");
 	ADD_ITEM_TYPE(8,"Water");
-	ADD_ITEM_TYPE(9,"Stationary Water");
+	ADD_ITEM_TYPE(9,"Stationary water");
 	ADD_ITEM_TYPE(10,"Lava");
-	ADD_ITEM_TYPE(11,"Stationary Lava");
+	ADD_ITEM_TYPE(11,"Stationary lava");
 	ADD_ITEM_TYPE(12,"Sand");
 	ADD_ITEM_TYPE(13,"Gravel");
 	ADD_ITEM_TYPE(14,"Gold Ore");
@@ -219,16 +219,21 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(24,"Sandstone");
 	ADD_ITEM_TYPE(25,"Note Block");
 	//ADD_ITEM_TYPE(26,"Bed"); //World block, not for inventory.
+	ADD_ITEM_TYPE(27,"Powered Rail");
+	ADD_ITEM_TYPE(28,"Detector Rail");
+	ADD_ITEM_TYPE(30,"Cobweb");
+	ADD_ITEM_TYPE(31,"Tall Grass");
+	ADD_ITEM_TYPE(32,"Dead Shrubs");
 	ADD_ITEM_TYPE(35,"Wool");
-	ADD_ITEM_TYPE(37,"Yellow Flower");
-	ADD_ITEM_TYPE(38,"Red Rose");
+	ADD_ITEM_TYPE(37,"Dandelion");
+	ADD_ITEM_TYPE(38,"Rose");
 	ADD_ITEM_TYPE(39,"Brown Mushroom");
 	ADD_ITEM_TYPE(40,"Red Mushroom");
 	ADD_ITEM_TYPE(41,"Gold Block");
 	ADD_ITEM_TYPE(42,"Iron Block");
-	ADD_ITEM_TYPE(43,"Double Stone Slab");
-	ADD_ITEM_TYPE(44,"Stone Slab");
-	ADD_ITEM_TYPE(45,"Brick");
+	ADD_ITEM_TYPE(43,"Double Slabs");
+	ADD_ITEM_TYPE(44,"Slabs");
+	ADD_ITEM_TYPE(45,"Brick Block");
 	ADD_ITEM_TYPE(46,"TNT");
 	ADD_ITEM_TYPE(47,"Bookshelf");
 	ADD_ITEM_TYPE(48,"Moss Stone");
@@ -241,44 +246,45 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(55,"Redstone Wire");
 	ADD_ITEM_TYPE(56,"Diamond Ore");
 	ADD_ITEM_TYPE(57,"Diamond Block");
-	ADD_ITEM_TYPE(58,"Workbench");
-	ADD_ITEM_TYPE(59,"Crops");
-	ADD_ITEM_TYPE(60,"Soil");
+	ADD_ITEM_TYPE(58,"Crafting Table");
+	ADD_ITEM_TYPE(59,"Seeds");
+	ADD_ITEM_TYPE(60,"Farmland");
 	ADD_ITEM_TYPE(61,"Furnace");
 	ADD_ITEM_TYPE(62,"Burning Furnace");
 	ADD_ITEM_TYPE(63,"Sign Post");
 	//ADD_ITEM_TYPE(64,"Wooden Door"); //Creates a rather useless half door that might cause Minecraft to crash.
-	ADD_ITEM_TYPE(65,"Ladder");
+	ADD_ITEM_TYPE(65,"Ladders");
 	ADD_ITEM_TYPE(66,"Rails");
 	ADD_ITEM_TYPE(67,"Cobblestone Stairs");
 	ADD_ITEM_TYPE(68,"Wall Sign");
 	ADD_ITEM_TYPE(69,"Lever");
 	ADD_ITEM_TYPE(70,"Stone Pressure Plate");
-	//ADD_ITEM_TYPE(71,"Iron Door"); //Creates a rather useless half door that might cause Minecraft to crash.
+	ADD_ITEM_TYPE(71,"Iron Door"); //Creates a rather useless half door that might cause Minecraft to crash.
 	ADD_ITEM_TYPE(72,"Wooden Pressure Plate");
 	ADD_ITEM_TYPE(73,"Redstone Ore");
 	ADD_ITEM_TYPE(74,"Glowing Redstone Ore");
-	ADD_ITEM_TYPE(75,"Redstone torch (\"off\" state)");
-	ADD_ITEM_TYPE(76,"Redstone torch (\"on\" state)");
+	ADD_ITEM_TYPE(75,"Redstone Torch (\"off\" state)");
+	ADD_ITEM_TYPE(76,"Redstone Torch (\"on\" state)");
 	ADD_ITEM_TYPE(77,"Stone Button");
 	ADD_ITEM_TYPE(78,"Snow");
 	ADD_ITEM_TYPE(79,"Ice");
 	ADD_ITEM_TYPE(80,"Snow Block");
 	ADD_ITEM_TYPE(81,"Cactus");
-	ADD_ITEM_TYPE(82,"Clay");
+	ADD_ITEM_TYPE(82,"Clay Block");
 	ADD_ITEM_TYPE(83,"Sugar Cane");
 	ADD_ITEM_TYPE(84,"Jukebox");
 	ADD_ITEM_TYPE(85,"Fence");
 	ADD_ITEM_TYPE(86,"Pumpkin");
 	ADD_ITEM_TYPE(87,"Netherrack");
 	ADD_ITEM_TYPE(88,"Soul Sand");
-	ADD_ITEM_TYPE(89,"Glowstone");
+	ADD_ITEM_TYPE(89,"Glowstone Block");
 	ADD_ITEM_TYPE(90,"Portal");
 	ADD_ITEM_TYPE(91,"Jack-O-Lantern");
 	ADD_ITEM_TYPE(92,"Cake Block");
-	//ADD_ITEM_TYPE(93,"Redstone Repeater (\"off\" state)"); //Same as "Redstone Repeater" below
-	//ADD_ITEM_TYPE(94,"Redstone Repeater (\"on\" state)"); //Same as "Redstone Repeater" below
-
+	//ADD_ITEM_TYPE(93,"Redstone Repeater (\"off\" state)"); //Same as "Redstone Repeater" below.
+	//ADD_ITEM_TYPE(94,"Redstone Repeater (\"on\" state)"); //Same as "Redstone Repeater" below.
+	ADD_ITEM_TYPE(95,"Locked Chest");
+	ADD_ITEM_TYPE(96,"Trapdoor");
 	ADD_ITEM_TYPE(256,"Iron Shovel");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
 	ADD_ITEM_TYPE(258,"Iron Axe");
@@ -312,7 +318,7 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(286,"Gold Axe");
 	ADD_ITEM_TYPE(287,"String");
 	ADD_ITEM_TYPE(288,"Feather");
-	ADD_ITEM_TYPE(289,"Sulphur");
+	ADD_ITEM_TYPE(289,"Gunpowder");
 	ADD_ITEM_TYPE(290,"Wooden Hoe");
 	ADD_ITEM_TYPE(291,"Stone Hoe");
 	ADD_ITEM_TYPE(292,"Iron Hoe");
@@ -321,14 +327,14 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(295,"Seeds");
 	ADD_ITEM_TYPE(296,"Wheat");
 	ADD_ITEM_TYPE(297,"Bread");
-	ADD_ITEM_TYPE(298,"Leather Helmet");
-	ADD_ITEM_TYPE(299,"Leather Chestplate");
-	ADD_ITEM_TYPE(300,"Leather Leggings");
+	ADD_ITEM_TYPE(298,"Leather Cap");
+	ADD_ITEM_TYPE(299,"Leather Tunic");
+	ADD_ITEM_TYPE(300,"Leather Pants");
 	ADD_ITEM_TYPE(301,"Leather Boots");
-	ADD_ITEM_TYPE(302,"Chainmail Helmet");
-	ADD_ITEM_TYPE(303,"Chainmail Chestplate");
-	ADD_ITEM_TYPE(304,"Chainmail Leggings");
-	ADD_ITEM_TYPE(305,"Chainmail Boots");
+	ADD_ITEM_TYPE(302,"Chain Helmet");
+	ADD_ITEM_TYPE(303,"Chain Chestplate");
+	ADD_ITEM_TYPE(304,"Chain Leggings");
+	ADD_ITEM_TYPE(305,"Chain Boots");
 	ADD_ITEM_TYPE(306,"Iron Helmet");
 	ADD_ITEM_TYPE(307,"Iron Chestplate");
 	ADD_ITEM_TYPE(308,"Iron Leggings");
@@ -345,26 +351,26 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(319,"Raw Porkchop");
 	ADD_ITEM_TYPE(320,"Cooked Porkchop");
 	ADD_ITEM_TYPE(321,"Paintings");
-	ADD_ITEM_TYPE(322,"Golden apple");
+	ADD_ITEM_TYPE(322,"Golden Apple");
 	ADD_ITEM_TYPE(323,"Sign");
-	ADD_ITEM_TYPE(324,"Wooden Door");
+	ADD_ITEM_TYPE(324,"Wooden door");
 	ADD_ITEM_TYPE(325,"Bucket");
-	ADD_ITEM_TYPE(326,"Water Bucket");
-	ADD_ITEM_TYPE(327,"Lava Bucket");
-	ADD_ITEM_TYPE(328,"Mine Cart");
+	ADD_ITEM_TYPE(326,"Water bucket");
+	ADD_ITEM_TYPE(327,"Lava bucket");
+	ADD_ITEM_TYPE(328,"Minecart");
 	ADD_ITEM_TYPE(329,"Saddle");
-	ADD_ITEM_TYPE(330,"Iron Door");
+	ADD_ITEM_TYPE(330,"Iron door");
 	ADD_ITEM_TYPE(331,"Redstone");
 	ADD_ITEM_TYPE(332,"Snowball");
 	ADD_ITEM_TYPE(333,"Boat");
 	ADD_ITEM_TYPE(334,"Leather");
 	ADD_ITEM_TYPE(335,"Milk");
 	ADD_ITEM_TYPE(336,"Clay Brick");
-	ADD_ITEM_TYPE(337,"Clay Balls");
-	ADD_ITEM_TYPE(338,"Sugar Canes");
+	ADD_ITEM_TYPE(337,"Clay");
+	ADD_ITEM_TYPE(338,"Sugar Cane");
 	ADD_ITEM_TYPE(339,"Paper");
 	ADD_ITEM_TYPE(340,"Book");
-	ADD_ITEM_TYPE(341,"Slime Ball");
+	ADD_ITEM_TYPE(341,"Slimeball");
 	ADD_ITEM_TYPE(342,"Storage Minecart");
 	ADD_ITEM_TYPE(343,"Powered Minecart");
 	ADD_ITEM_TYPE(344,"Egg");
@@ -380,6 +386,8 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(354,"Cake");
 	ADD_ITEM_TYPE(355,"Bed");
 	ADD_ITEM_TYPE(356,"Redstone Repeater");
+	ADD_ITEM_TYPE(357,"Cookie");
+	ADD_ITEM_TYPE(358,"Map");
 	ADD_ITEM_TYPE(2256,"Gold Music Disc");
 	ADD_ITEM_TYPE(2257,"Green Music Disc");
 #undef ADD_ITEM_TYPE
@@ -430,5 +438,55 @@ string ItemTypeName(const short value)
 		return boost::lexical_cast<string>(value);
 	else
 		return (*itemTypeIter).second;
+}
+
+ItemDetailMap CreateItemDetailMap()
+{
+	ItemDetailMap itemDetailMap;
+/* TODO: Maybe InvGrid will support changing an item based on damage/detail someday.
+#define ADD_ITEM_DETAIL(v,damage,name) v.push_back(ItemDetail(damage,name));
+	//Wool
+	vector<ItemDetail> woolDetails;
+	ADD_ITEM_DETAIL(woolDetails,0,"Plain");
+	ADD_ITEM_DETAIL(woolDetails,1,"Orange");
+	ADD_ITEM_DETAIL(woolDetails,2,"Magenta");
+	ADD_ITEM_DETAIL(woolDetails,3,"Light Blue");
+	ADD_ITEM_DETAIL(woolDetails,4,"Yellow");
+	ADD_ITEM_DETAIL(woolDetails,5,"Light Green");
+	ADD_ITEM_DETAIL(woolDetails,6,"Pink");
+	ADD_ITEM_DETAIL(woolDetails,7,"Black");
+	ADD_ITEM_DETAIL(woolDetails,8,"Grey");
+	ADD_ITEM_DETAIL(woolDetails,9,"Cyan");
+	ADD_ITEM_DETAIL(woolDetails,10,"Purple");
+	ADD_ITEM_DETAIL(woolDetails,11,"Blue");
+	ADD_ITEM_DETAIL(woolDetails,12,"Brown");
+	ADD_ITEM_DETAIL(woolDetails,13,"Dark Green");
+	ADD_ITEM_DETAIL(woolDetails,14,"Red");
+	ADD_ITEM_DETAIL(woolDetails,15,"Black");
+	itemDetailMap[35] = woolDetails;
+
+	//Dye
+	vector<ItemDetail> dyeDetails;
+	ADD_ITEM_DETAIL(dyeDetails,0,"Ink Sac");
+	ADD_ITEM_DETAIL(dyeDetails,1,"Rose Red Dye");
+	ADD_ITEM_DETAIL(dyeDetails,2,"Cactus Green Dye");
+	ADD_ITEM_DETAIL(dyeDetails,3,"Cocoa Beans Dye");
+	ADD_ITEM_DETAIL(dyeDetails,4,"Lapis Lazuli Dye");
+	ADD_ITEM_DETAIL(dyeDetails,5,"Purple Dye");
+	ADD_ITEM_DETAIL(dyeDetails,6,"Cyan Dye");
+	ADD_ITEM_DETAIL(dyeDetails,7,"Light Gray Dye");
+	ADD_ITEM_DETAIL(dyeDetails,8,"Gray Dye");
+	ADD_ITEM_DETAIL(dyeDetails,9,"Pink Dye");
+	ADD_ITEM_DETAIL(dyeDetails,10,"Lime Dye");
+	ADD_ITEM_DETAIL(dyeDetails,11,"Dandelion Yellow Dye");
+	ADD_ITEM_DETAIL(dyeDetails,12,"Light Blue Dye");
+	ADD_ITEM_DETAIL(dyeDetails,13,"Magenta Dye");
+	ADD_ITEM_DETAIL(dyeDetails,14,"Orange Dye");
+	ADD_ITEM_DETAIL(dyeDetails,15,"Bone Meal Dye");
+	itemDetailMap[351] = dyeDetails;
+#undef ADD_ITEM_DETAIL
+*/
+
+	return itemDetailMap;
 }
 

@@ -29,26 +29,6 @@ MainWindow::MainWindow()
 	openAction->setShortcuts(QKeySequence::Open);
 	connect(openAction,SIGNAL(triggered()),this,SLOT(Open()));
 
-	QAction* openWorld1Action = new QAction("Open World &1",NULL);
-	openWorld1Action->setShortcut(QString("Ctrl+1"));
-	connect(openWorld1Action,SIGNAL(triggered()),this,SLOT(OpenWorld1()));
-
-	QAction* openWorld2Action = new QAction("Open World &2",NULL);
-	openWorld2Action->setShortcut(QString("Ctrl+2"));
-	connect(openWorld2Action,SIGNAL(triggered()),this,SLOT(OpenWorld2()));
-
-	QAction* openWorld3Action = new QAction("Open World &3",NULL);
-	openWorld3Action->setShortcut(QString("Ctrl+3"));
-	connect(openWorld3Action,SIGNAL(triggered()),this,SLOT(OpenWorld3()));
-
-	QAction* openWorld4Action = new QAction("Open World &4",NULL);
-	openWorld4Action->setShortcut(QString("Ctrl+4"));
-	connect(openWorld4Action,SIGNAL(triggered()),this,SLOT(OpenWorld4()));
-
-	QAction* openWorld5Action = new QAction("Open World &5",NULL);
-	openWorld5Action->setShortcut(QString("Ctrl+5"));
-	connect(openWorld5Action,SIGNAL(triggered()),this,SLOT(OpenWorld5()));
-
 	QAction* saveAction = new QAction(tr("&Save"),NULL);
 	saveAction->setShortcuts(QKeySequence::Save);
 	connect(saveAction,SIGNAL(triggered()),this,SLOT(Save()));
@@ -69,11 +49,6 @@ MainWindow::MainWindow()
 
 	fileMenu = menuBar()->addMenu(tr("&File"));
 	fileMenu->addAction(openAction);
-	fileMenu->addAction(openWorld1Action);
-	fileMenu->addAction(openWorld2Action);
-	fileMenu->addAction(openWorld3Action);
-	fileMenu->addAction(openWorld4Action);
-	fileMenu->addAction(openWorld5Action);
 	fileMenu->addSeparator();
 	fileMenu->addAction(saveAction);
 	fileMenu->addAction(saveAsAction);
@@ -126,7 +101,7 @@ MainWindow::MainWindow()
 	//Setup main window.
 	setCentralWidget(tabWidget);
 	resize(780,500);
-	setWindowTitle("InvGrid 0.8.2 | Simple Minecraft Inventory Editor");
+	setWindowTitle("InvGrid 0.9 | Simple Minecraft Inventory Editor");
 }
 
 MainWindow::~MainWindow()
@@ -169,31 +144,6 @@ void MainWindow::Open()
 		return;
 
 	Load(fileName.toAscii().data());
-}
-
-void MainWindow::OpenWorld1()
-{
-	LoadWorld("World1");
-}
-
-void MainWindow::OpenWorld2()
-{
-	LoadWorld("World2");
-}
-
-void MainWindow::OpenWorld3()
-{
-	LoadWorld("World3");
-}
-
-void MainWindow::OpenWorld4()
-{
-	LoadWorld("World4");
-}
-
-void MainWindow::OpenWorld5()
-{
-	LoadWorld("World5");
 }
 
 void MainWindow::Save()
