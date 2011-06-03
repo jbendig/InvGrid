@@ -143,7 +143,7 @@ void MainWindow::Open()
 	if(fileName.isNull())
 		return;
 
-	Load(fileName.toAscii().data());
+	Load(fileName.toUtf8().data());
 }
 
 void MainWindow::Save()
@@ -151,7 +151,7 @@ void MainWindow::Save()
 	if(openFileName.isEmpty())
 		QMessageBox::critical(NULL,"Unable to save file","You must open a file first.");
 
-	Save(openFileName.toAscii().data());
+	Save(openFileName.toUtf8().data());
 }
 
 void MainWindow::SaveAs()
@@ -160,7 +160,7 @@ void MainWindow::SaveAs()
 	if(fileName.isNull())
 		return;
 
-	if(Save(fileName.toAscii().data()))
+	if(Save(fileName.toUtf8().data()))
 		openFileName = fileName;
 }
 
@@ -180,7 +180,7 @@ void MainWindow::ImportInventory()
 		return;
 
 	//Import.
-	inventoryWidget->ImportInventory(fileName.toAscii().data());
+	inventoryWidget->ImportInventory(fileName.toUtf8().data());
 }
 
 void MainWindow::ExportInventory()
@@ -199,7 +199,7 @@ void MainWindow::ExportInventory()
 		return;
 
 	//Export.
-	inventoryWidget->ExportInventory(fileName.toAscii().data());
+	inventoryWidget->ExportInventory(fileName.toUtf8().data());
 }
 
 void MainWindow::LoadWorld(const char* worldName)
@@ -254,7 +254,7 @@ bool MainWindow::Load(const char* filePath)
 	scriptWidget->SetInventoryTag(inventoryTag);
 	miscWidget->LoadFromRootTag(&rootTag);
 
-	openFileName = filePath;
+	openFileName = QString::fromUtf8(filePath,strlen(filePath));
 	return true;
 }
 
