@@ -221,10 +221,14 @@ ItemTypeBimap CreateItemTypeBimap()
 	//ADD_ITEM_TYPE(26,"Bed"); //World block, not for inventory.
 	ADD_ITEM_TYPE(27,"Powered Rail");
 	ADD_ITEM_TYPE(28,"Detector Rail");
+	ADD_ITEM_TYPE(29,"Sticky Piston");
 	ADD_ITEM_TYPE(30,"Cobweb");
 	ADD_ITEM_TYPE(31,"Tall Grass");
 	ADD_ITEM_TYPE(32,"Dead Shrubs");
+	ADD_ITEM_TYPE(33,"Piston");
+	ADD_ITEM_TYPE(34,"Piston Extension");
 	ADD_ITEM_TYPE(35,"Wool");
+	ADD_ITEM_TYPE(36,"Block 36");
 	ADD_ITEM_TYPE(37,"Dandelion");
 	ADD_ITEM_TYPE(38,"Rose");
 	ADD_ITEM_TYPE(39,"Brown Mushroom");
@@ -285,6 +289,25 @@ ItemTypeBimap CreateItemTypeBimap()
 	//ADD_ITEM_TYPE(94,"Redstone Repeater (\"on\" state)"); //Same as "Redstone Repeater" below.
 	ADD_ITEM_TYPE(95,"Locked Chest");
 	ADD_ITEM_TYPE(96,"Trapdoor");
+	ADD_ITEM_TYPE(97,"Hidden Silverfish");
+	ADD_ITEM_TYPE(98,"Stone Brick");
+	ADD_ITEM_TYPE(99,"Brown Mushroom");
+	ADD_ITEM_TYPE(100,"Red Mushroom");
+	ADD_ITEM_TYPE(101,"Iron Bars");
+	ADD_ITEM_TYPE(102,"Glass Pane");
+	ADD_ITEM_TYPE(103,"Melon");
+	ADD_ITEM_TYPE(104,"Pumpkin Stem");
+	ADD_ITEM_TYPE(105,"Melon Stem");
+	ADD_ITEM_TYPE(106,"Vines");
+	ADD_ITEM_TYPE(107,"Fence Gate");
+	ADD_ITEM_TYPE(108,"Brick Stairs");
+	ADD_ITEM_TYPE(109,"Stone Brick Stairs");
+	ADD_ITEM_TYPE(110,"Mycelium");
+	ADD_ITEM_TYPE(111,"Lily Pad");
+	ADD_ITEM_TYPE(112,"Nether Brick");
+	ADD_ITEM_TYPE(113,"Nether Brick Fence");
+	ADD_ITEM_TYPE(114,"Nether Brick Stairs");
+	ADD_ITEM_TYPE(115,"Nether Wart");
 	ADD_ITEM_TYPE(256,"Iron Shovel");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
 	ADD_ITEM_TYPE(258,"Iron Axe");
@@ -388,6 +411,20 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(356,"Redstone Repeater");
 	ADD_ITEM_TYPE(357,"Cookie");
 	ADD_ITEM_TYPE(358,"Map");
+	ADD_ITEM_TYPE(359,"Shears");
+	ADD_ITEM_TYPE(360,"Melon Slice");
+	ADD_ITEM_TYPE(361,"Pumpkin Seeds");
+	ADD_ITEM_TYPE(362,"Melon Seeds");
+	ADD_ITEM_TYPE(363,"Raw Beef");
+	ADD_ITEM_TYPE(364,"Steak");
+	ADD_ITEM_TYPE(365,"Raw Chicken");
+	ADD_ITEM_TYPE(366,"Cooked Chicken");
+	ADD_ITEM_TYPE(367,"Rotten Flesh");
+	ADD_ITEM_TYPE(368,"Ender Pearl");
+	ADD_ITEM_TYPE(369,"Blaze Rod");
+	ADD_ITEM_TYPE(370,"Ghast Tear");
+	ADD_ITEM_TYPE(371,"Gold Nugget");
+	ADD_ITEM_TYPE(372,"Nether Wart");
 	ADD_ITEM_TYPE(2256,"Gold Music Disc");
 	ADD_ITEM_TYPE(2257,"Green Music Disc");
 #undef ADD_ITEM_TYPE
