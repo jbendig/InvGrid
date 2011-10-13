@@ -311,8 +311,9 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(116,"Enchantment Table");
 	ADD_ITEM_TYPE(117,"Brewing Stand");
 	ADD_ITEM_TYPE(118,"Cauldron");
-	//ADD_ITEM_TYPE(119,"Air Portal"); // having this in the inventory will crash 1.9pre3
-	ADD_ITEM_TYPE(120,"Air Portal Frame");
+	//ADD_ITEM_TYPE(119,"Ender Portal"); // having this in the inventory will crash 1.9pre3
+	ADD_ITEM_TYPE(120,"Ender Portal Frame");
+	ADD_ITEM_TYPE(121,"White Stone");
 	ADD_ITEM_TYPE(256,"Iron Shovel");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
 	ADD_ITEM_TYPE(258,"Iron Axe");
@@ -439,6 +440,7 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(379,"Brewing Stand");
 	ADD_ITEM_TYPE(380,"Cauldron");
 	ADD_ITEM_TYPE(381,"Eye of Ender");
+	ADD_ITEM_TYPE(382,"Glistering Melon");
 	ADD_ITEM_TYPE(2256,"13 Disc");
 	ADD_ITEM_TYPE(2257,"Cat Disc");
 	ADD_ITEM_TYPE(2258,"Blocks Disc");
