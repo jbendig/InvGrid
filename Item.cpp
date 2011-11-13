@@ -313,7 +313,8 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(118,"Cauldron");
 	//ADD_ITEM_TYPE(119,"Ender Portal"); // having this in the inventory will crash 1.9pre3
 	ADD_ITEM_TYPE(120,"Ender Portal Frame");
-	ADD_ITEM_TYPE(121,"White Stone");
+	ADD_ITEM_TYPE(121,"End Stone");
+	ADD_ITEM_TYPE(122,"Dragon Egg");
 	ADD_ITEM_TYPE(256,"Iron Shovel");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
 	ADD_ITEM_TYPE(258,"Iron Axe");
