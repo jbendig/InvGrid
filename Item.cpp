@@ -308,6 +308,13 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(113,"Nether Brick Fence");
 	ADD_ITEM_TYPE(114,"Nether Brick Stairs");
 	ADD_ITEM_TYPE(115,"Nether Wart");
+	ADD_ITEM_TYPE(116,"Enchantment Table");
+	ADD_ITEM_TYPE(117,"Brewing Stand");
+	ADD_ITEM_TYPE(118,"Cauldron");
+	//ADD_ITEM_TYPE(119,"Ender Portal"); // having this in the inventory will crash 1.9pre3
+	ADD_ITEM_TYPE(120,"Ender Portal Frame");
+	ADD_ITEM_TYPE(121,"End Stone");
+	ADD_ITEM_TYPE(122,"Dragon Egg");
 	ADD_ITEM_TYPE(256,"Iron Shovel");
 	ADD_ITEM_TYPE(257,"Iron Pickaxe");
 	ADD_ITEM_TYPE(258,"Iron Axe");
@@ -425,8 +432,27 @@ ItemTypeBimap CreateItemTypeBimap()
 	ADD_ITEM_TYPE(370,"Ghast Tear");
 	ADD_ITEM_TYPE(371,"Gold Nugget");
 	ADD_ITEM_TYPE(372,"Nether Wart");
-	ADD_ITEM_TYPE(2256,"Gold Music Disc");
-	ADD_ITEM_TYPE(2257,"Green Music Disc");
+	ADD_ITEM_TYPE(373,"Potion");
+	ADD_ITEM_TYPE(374,"Glass Bottle");
+	ADD_ITEM_TYPE(375,"Spider Eye");
+	ADD_ITEM_TYPE(376,"Fermented Spider Eye");
+	ADD_ITEM_TYPE(377,"Blaze Powder");
+	ADD_ITEM_TYPE(378,"Magma Cream");
+	ADD_ITEM_TYPE(379,"Brewing Stand");
+	ADD_ITEM_TYPE(380,"Cauldron");
+	ADD_ITEM_TYPE(381,"Eye of Ender");
+	ADD_ITEM_TYPE(382,"Glistering Melon");
+	ADD_ITEM_TYPE(2256,"13 Disc");
+	ADD_ITEM_TYPE(2257,"Cat Disc");
+	ADD_ITEM_TYPE(2258,"Blocks Disc");
+	ADD_ITEM_TYPE(2259,"Chirp Disc");
+	ADD_ITEM_TYPE(2260,"Far Disc");
+	ADD_ITEM_TYPE(2261,"Mall Disc");
+	ADD_ITEM_TYPE(2262,"Mellohi Disc");
+	ADD_ITEM_TYPE(2263,"Stal Disc");
+	ADD_ITEM_TYPE(2264,"Strad Disc");
+	ADD_ITEM_TYPE(2265,"Ward Disc");
+	ADD_ITEM_TYPE(2266,"11 Disc");
 #undef ADD_ITEM_TYPE
 
 	//Try and load a custom comma delimitered file that can overwrite default items.
