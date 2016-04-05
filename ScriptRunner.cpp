@@ -216,7 +216,11 @@ int ScriptRunner_ClearInventory(lua_State* luaState)
 ScriptRunner::ScriptRunner()
 {
 	//Setup LUA.
+#if LUA_VERSION_NUM < 502
 	luaState = lua_open();
+#else
+	luaState = luaL_newstate();
+#endif
 	lua_atpanic(luaState,ScriptRunner_onpanic);
 	luaopen_debug(luaState);
 	ScriptRunner_openlib(luaState,"",luaopen_base);
