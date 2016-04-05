@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <cstring>
 #include <boost/static_assert.hpp>
 using std::vector;
 using std::string;
